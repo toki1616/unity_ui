@@ -52,7 +52,7 @@ public class ChatReceivedView : MonoBehaviour
         CreateMessagePanel(message, ChatEnum.MessageSendUser.Other);
     }
 
-    async void CreateMessagePanel(string message, ChatEnum.MessageSendUser user)
+    private void CreateMessagePanel(string message, ChatEnum.MessageSendUser user)
     {
         GameObject spawnObject;
         if (user == ChatEnum.MessageSendUser.self)
