@@ -1,8 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Triggers;
+using UnityEngine.EventSystems;
 
 public class NovelTapView : MonoBehaviour
 {
@@ -20,16 +22,22 @@ public class NovelTapView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        var eventTrigger = this.gameObject.AddComponent<ObservableEventTrigger>();
+        // PointerDown
+        eventTrigger.OnPointerDownAsObservable()
+                    .Subscribe(pointerEventData => OnPointerDown(pointerEventData))
+                    .AddTo(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("NovelTapView : Tap");
-            _novelPresenter.SendNextMessage();
-        }
+        
+    }
+
+    private void OnPointerDown(PointerEventData pointerEventData)
+    {
+        //Debug.Log(pointerEventData.position);
+        _novelPresenter.SendNextMessage();
     }
 }
