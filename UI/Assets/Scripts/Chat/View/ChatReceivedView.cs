@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -40,7 +40,7 @@ public class ChatReceivedView : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ƒXƒNƒ[ƒ‹ƒrƒ…[‚Ì‚‚³’²®
+        // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ã®é«˜ã•èª¿æ•´
         Vector2 offsetMin = _scrollRectTransform.offsetMin;
         _scrollRectTransform.offsetMin = offsetMin;
     }

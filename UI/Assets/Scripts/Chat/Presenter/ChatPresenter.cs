@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +25,7 @@ public class ChatPresenter
 
     public IObservable<string> sendMessageAsObservable =>
             _chatModel.SendMessage
-            .Skip(1)    //“o˜^‚É‘–‚ç‚È‚¢‚æ‚¤‚É
+            .Skip(1)    //ç™»éŒ²æ™‚ã«èµ°ã‚‰ãªã„ã‚ˆã†ã«
             .Share();
 
     public void SendReaction(ChatEnum.Reaction reaction)
