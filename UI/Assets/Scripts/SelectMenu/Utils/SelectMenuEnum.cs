@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +15,9 @@ public class SelectMenuEnum
         switch (menuEnum)
         {
             case Menu.Chat:
-                return "ƒ`ƒƒƒbƒg";
+                return "ãƒãƒ£ãƒƒãƒˆ";
             case Menu.Novel:
-                return "ƒmƒxƒ‹";
+                return "ãƒãƒ™ãƒ«";
             default:
                 return "";
         }
