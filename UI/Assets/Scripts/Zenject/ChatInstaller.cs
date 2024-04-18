@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class ChatInstaller : MonoInstaller
@@ -12,5 +12,8 @@ public class ChatInstaller : MonoInstaller
 
         //Presenter
         Container.Bind<ChatPresenter>().AsSingle();
+
+        CsvUtils csvUtils = new CsvUtils();
+        csvUtils.ReadNovelCsvFile();
     }
 }
