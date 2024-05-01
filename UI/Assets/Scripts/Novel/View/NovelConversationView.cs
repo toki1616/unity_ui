@@ -29,18 +29,9 @@ public class NovelConversationView : MonoBehaviour
         _novelPresenter.sendMessageAsObservable.Subscribe(_ => ReceivedMessage(_)).AddTo(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            UpdateName("namae");
-            UpdateMessage("message");
-        }
-    }
-
     private void ReceivedMessage(NovelMessage novelMessage)
     {
-        Debug.Log($"NovelConversationView : ReceivedMessage");
+        //Debug.Log($"NovelConversationView : ReceivedMessage");
         nameText.text = $"{novelMessage.GetCharacterName()}";
         messageText.text = $"{novelMessage.GetMessage()}";
     }
