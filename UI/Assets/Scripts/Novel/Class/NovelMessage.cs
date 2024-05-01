@@ -1,21 +1,59 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+public class NovelMessageData
+{
+    List<NovelMessage> novelMessageData;
+
+    public NovelMessageData()
+    {
+        CsvUtils csvUtils = new CsvUtils();
+        novelMessageData = csvUtils.ReadNovelCsvFile();
+        foreach (NovelMessage message in novelMessageData)
+        {
+            Debug.Log($"storyNum ：{message.GetStoryNum()} ,characterName ：{message.GetCharacterName()} ,message ：{message.GetMessage()} ,placeImage ：{message.GetPlaceImage()} ,characterImage ：{message.GetCharacterImage()}");
+        }
+    }
+}
+
 public class NovelMessage
 {
-    string name;
+    int storyNum;
+    string characterName;
     string message;
+    string placeImage;
+    string characterImage;
 
-    public NovelMessage(string name, string message)
+    public NovelMessage(int storyNum, string characterName, string message, string placeImage, string characterImage)
     {
-        this.name = name;
+        this.storyNum = storyNum;
+        this.characterName = characterName;
         this.message = message;
+        this.placeImage = characterImage;
     }
 
-    public string GetName()
+    public int GetStoryNum()
     {
-        return name;
+        return storyNum;
+    }
+
+    public string GetCharacterName()
+    {
+        return characterName;
     }
 
     public string GetMessage()
     {
         return message;
+    }
+
+    public string GetPlaceImage()
+    {
+        return placeImage;
+    }
+
+    public string GetCharacterImage()
+    {
+        return characterImage;
     }
 }

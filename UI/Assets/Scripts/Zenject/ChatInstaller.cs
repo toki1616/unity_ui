@@ -12,8 +12,5 @@ public class ChatInstaller : MonoInstaller
 
         //Presenter
         Container.Bind<ChatPresenter>().AsSingle();
-
-        CsvUtils csvUtils = new CsvUtils();
-        csvUtils.ReadNovelCsvFile();
     }
 }

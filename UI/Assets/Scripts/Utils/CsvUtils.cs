@@ -22,15 +22,21 @@ public class CsvUtils
         return csvData;
     }
 
-    public void ReadNovelCsvFile()
+    public List<NovelMessage> ReadNovelCsvFile()
     {
         Debug.Log("ReadNovelCsvFile");
         var csvData = ReadCsvFile("NovelData/Csv/NovelData");
+        List<NovelMessage> novelData = new List<NovelMessage>();
 
-        for (int i = 0; i < csvData.Count; i++) // csvDataリストの条件を満たす値の数（全て）
+        //初めの行はカテゴリの値が入っているため、i=1から始める
+        for (int i = 1; i < csvData.Count; i++)
         {
             // データの表示
-            Debug.Log($"storyNum ：{csvData[i][0]} ,characterName ：{csvData[i][1]} ,message ：{csvData[i][2]} ,placeImage ：{csvData[i][3]} ,characterImage ：{csvData[i][4]}");
+            //Debug.Log($"storyNum ：{csvData[i][0]} ,characterName ：{csvData[i][1]} ,message ：{csvData[i][2]} ,placeImage ：{csvData[i][3]} ,characterImage ：{csvData[i][4]}");
+            NovelMessage novelMessage = new NovelMessage(storyNum: int.Parse(csvData[i][0]), characterName: csvData[i][1], message: csvData[i][2], placeImage: csvData[i][3], characterImage: csvData[i][4]);
+            novelData.Add(novelMessage);
         }
+
+        return novelData;
     }
 }
