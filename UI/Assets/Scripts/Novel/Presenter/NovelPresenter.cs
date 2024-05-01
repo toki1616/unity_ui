@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,13 +19,18 @@ public class NovelPresenter
 
     public void SendNextMessage()
     {
-        Debug.Log($"test : NovelPresenter : SendNextMessageText");
+        //Debug.Log($"test : NovelPresenter : SendNextMessageText");
         _novelModel.SendNextMessageText();
     }
 
     public IObservable<NovelMessage> sendMessageAsObservable =>
             _novelModel.SendNextMessage
-            .Skip(1)    //�o�^���ɑ���Ȃ��悤��
+            .Skip(1)    //登録時に走らないように
+            .Share();
+
+    public IObservable<Sprite> sendBackgroundImage =>
+            _novelModel.SendBackGroundImage
+            .Skip(1)    //登録時に走らないように
             .Share();
 
     public void SaveNowMessage()

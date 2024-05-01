@@ -6,11 +6,10 @@ public class NovelMessageData
     List<NovelMessage> novelMessageData;
     private int nextStoryNum = 0;
 
-    public NovelMessageData()
+    public NovelMessageData(CsvUtils csvUtils)
     {
-        CsvUtils csvUtils = new CsvUtils();
         novelMessageData = csvUtils.ReadNovelCsvFile();
-        
+
         //foreach (NovelMessage message in novelMessageData)
         //{
         //    Debug.Log($"storyNum ：{message.GetStoryNum()} ,characterName ：{message.GetCharacterName()} ,message ：{message.GetMessage()} ,placeImage ：{message.GetPlaceImage()} ,characterImage ：{message.GetCharacterImage()}");
@@ -50,7 +49,8 @@ public class NovelMessage
         this.storyNum = storyNum;
         this.characterName = characterName;
         this.message = message;
-        this.placeImage = characterImage;
+        this.placeImage = placeImage;
+        this.characterImage = characterImage;
     }
 
     public int GetStoryNum()
