@@ -1,0 +1,5 @@
+storyNum,characterName,message,placeImage,characterImage
+0,test1,testMessage1,testImage1,testImage1
+1,test2,testMessage2,testImage2,testImage2
+2,test3,testMessage3,testImage3,testImage3
+3,test4,testMessage4,testImage4,testImage1&testImage4

@@ -41,7 +41,7 @@ public class NovelConversationView : MonoBehaviour
     private void ReceivedMessage(NovelMessage novelMessage)
     {
         Debug.Log($"NovelConversationView : ReceivedMessage");
-        nameText.text = $"{novelMessage.GetName()}";
+        nameText.text = $"{novelMessage.GetCharacterName()}";
         messageText.text = $"{novelMessage.GetMessage()}";
     }
 
