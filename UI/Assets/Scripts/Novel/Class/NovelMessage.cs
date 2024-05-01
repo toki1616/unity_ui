@@ -4,15 +4,36 @@ using UnityEngine;
 public class NovelMessageData
 {
     List<NovelMessage> novelMessageData;
+    private int nextStoryNum = 0;
 
     public NovelMessageData()
     {
         CsvUtils csvUtils = new CsvUtils();
         novelMessageData = csvUtils.ReadNovelCsvFile();
-        foreach (NovelMessage message in novelMessageData)
+        
+        //foreach (NovelMessage message in novelMessageData)
+        //{
+        //    Debug.Log($"storyNum ：{message.GetStoryNum()} ,characterName ：{message.GetCharacterName()} ,message ：{message.GetMessage()} ,placeImage ：{message.GetPlaceImage()} ,characterImage ：{message.GetCharacterImage()}");
+        //}
+    }
+
+    public NovelMessage GetNextMessage()
+    {
+        if (novelMessageData.Count <= 0)
         {
-            Debug.Log($"storyNum ：{message.GetStoryNum()} ,characterName ：{message.GetCharacterName()} ,message ：{message.GetMessage()} ,placeImage ：{message.GetPlaceImage()} ,characterImage ：{message.GetCharacterImage()}");
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
         }
+
+        if (novelMessageData.Count <= nextStoryNum)
+        {
+            nextStoryNum = 0;
+            //Debug.Log("not next message");
+            return novelMessageData[0];
+        }
+
+        nextStoryNum++;
+        return novelMessageData[nextStoryNum - 1];
     }
 }
 

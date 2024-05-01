@@ -17,7 +17,7 @@ public class NovelModel
     public void SendNextMessageText()
     {
         Debug.Log($"test : NovelModel : SendNextMessageText");
-        NovelMessage novelMessage = new NovelMessage(storyNum: 0, characterName: "name", message: "message", placeImage: "test", characterImage: "test");
+        NovelMessage novelMessage = novelMessageData.GetNextMessage();
         _sendNextMessage.SetValueAndForceNotify(novelMessage);
     }
 }
