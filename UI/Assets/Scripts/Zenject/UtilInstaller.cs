@@ -7,10 +7,8 @@ public class UtilInstaller : MonoInstaller
     {
         Debug.Log("UtilInstaller run");
 
-        //Model
         Container.Bind<ResourcesUtils>().AsSingle();
-
-        //Presenter
         Container.Bind<CsvUtils>().AsSingle();
+        Container.Bind<StringSplitUtils>().AsSingle();
     }
 }
