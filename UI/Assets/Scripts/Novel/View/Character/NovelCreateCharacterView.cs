@@ -29,10 +29,22 @@ public class NovelCreateCharacterView : MonoBehaviour
     private void CreateCharacter(List<Sprite> imageList)
     {
         //Debug.Log($"NovelCreateCharacterView : ReceivedBackgroundImage");
+        DeleteChildObject();
+
         foreach (var image in imageList)
         {
             GameObject spawnObject = Instantiate(_spawnCharacterImagePrefab, this.transform);
             spawnObject.GetComponent<NovelCharacterImageView>().ReceivedCharacterImage(image);
+        }
+    }
+
+    private void DeleteChildObject()
+    {
+        //自分の子供を全て調べる
+        foreach (Transform child in this.transform)
+        {
+            //自分の子供をDestroyする
+            Destroy(child.gameObject);
         }
     }
 }
