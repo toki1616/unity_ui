@@ -33,6 +33,11 @@ public class NovelPresenter
             .Skip(1)    //登録時に走らないように
             .Share();
 
+    public IObservable<List<Sprite>> sendCharacterImage =>
+            _novelModel.SendCharacterImage
+            .Skip(1)    //登録時に走らないように
+            .Share();
+
     public void SaveNowMessage()
     {
 
