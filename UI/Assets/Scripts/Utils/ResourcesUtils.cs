@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourcesUtils
+namespace Util
 {
-    private const string novelDataPath = "NovelData";
-
-    private Sprite GetSpriteImage(string path)
+    public static class ResourcesUtils
     {
-        return Resources.Load<Sprite>(path);
-    }
+        private const string novelDataPath = "NovelData";
 
-    public Sprite GetNovelBackgroundImage(string path)
-    {
-        return GetSpriteImage($"{novelDataPath}/BackgroundImage/{path}");
-    }
+        private static Sprite GetSpriteImage(string path)
+        {
+            return Resources.Load<Sprite>(path);
+        }
 
-    public Sprite GetNovelCharacterImage(string path)
-    {
-        return GetSpriteImage($"{novelDataPath}/CharacterImage/{path}");
+        public static Sprite GetNovelBackgroundImage(string path)
+        {
+            return GetSpriteImage($"{novelDataPath}/BackgroundImage/{path}");
+        }
+
+        public static Sprite GetNovelCharacterImage(string path)
+        {
+            return GetSpriteImage($"{novelDataPath}/CharacterImage/{path}");
+        }
     }
 }

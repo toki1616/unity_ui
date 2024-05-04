@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StringSplitUtils
+namespace Util
 {
-    public string[] GetSplitNovelCharacterImagePaths(string value)
+    public static class StringSplitUtils
     {
-        if (!value.Contains("&"))
+        public static string[] GetSplitNovelCharacterImagePaths(string value)
         {
-            return new string[1] {value};
-        }
+            if (!value.Contains("&"))
+            {
+                return new string[1] { value };
+            }
 
-        string[] splitString = value.Split('&');
-        return splitString;
+            string[] splitString = value.Split('&');
+            return splitString;
+        }
     }
 }

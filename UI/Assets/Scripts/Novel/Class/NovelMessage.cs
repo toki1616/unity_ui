@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+using Util;
 public class NovelMessageData
 {
     List<NovelMessage> novelMessageData;
     //読み込んでいないため-1から始める
     private int nowStoryNum = -1;
 
-    public NovelMessageData(CsvUtils csvUtils)
+    public NovelMessageData()
     {
-        novelMessageData = csvUtils.ReadNovelCsvFile();
+        novelMessageData = CsvUtils.ReadNovelCsvFile();
 
         //foreach (NovelMessage message in novelMessageData)
         //{

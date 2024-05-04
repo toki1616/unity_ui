@@ -7,18 +7,12 @@ using Util;
 
 public class NovelModel
 {
-    private readonly ResourcesUtils _resourcesUtils;
-    private readonly StringSplitUtils _stringSplitUtils;
-
     private readonly NovelMessageData _novelMessageData;
     private readonly NovelSaveDataList _novelSaveDataList;
 
-    public NovelModel(ResourcesUtils resourcesUtils, CsvUtils csvUtils, StringSplitUtils stringSplitUtils)
+    public NovelModel()
     {
-        _resourcesUtils = resourcesUtils;
-        _stringSplitUtils = stringSplitUtils;
-
-        _novelMessageData = new NovelMessageData(csvUtils);
+        _novelMessageData = new NovelMessageData();
         _novelSaveDataList = new NovelSaveDataList();
     }
 
@@ -46,17 +40,17 @@ public class NovelModel
         _sendNextMessage.SetValueAndForceNotify(novelMessage);
 
         //BackgroundImage
-        Sprite bgImage = _resourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
+        Sprite bgImage = ResourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
         _sendBackGroundImage.SetValueAndForceNotify(bgImage);
 
         //characterImage
-        string[] characterImagePaths = _stringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
+        string[] characterImagePaths = StringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
         List<Sprite> characterImageList = new List<Sprite>();
 
         foreach (string path in characterImagePaths)
         {
             //Debug.Log($"path : {path}");
-            Sprite characterImage = _resourcesUtils.GetNovelCharacterImage(path: path);
+            Sprite characterImage = ResourcesUtils.GetNovelCharacterImage(path: path);
             characterImageList.Add(characterImage);
         }
 
