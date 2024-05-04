@@ -10,5 +10,7 @@ public class UtilInstaller : MonoInstaller
         Container.Bind<ResourcesUtils>().AsSingle();
         Container.Bind<CsvUtils>().AsSingle();
         Container.Bind<StringSplitUtils>().AsSingle();
+        Container.Bind<PlayerDataUtils>().AsSingle();
+        Container.Bind<FileUtils>().AsSingle();
     }
 }

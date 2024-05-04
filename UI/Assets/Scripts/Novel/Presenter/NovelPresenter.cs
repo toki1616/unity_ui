@@ -38,13 +38,8 @@ public class NovelPresenter
             .Skip(1)    //登録時に走らないように
             .Share();
 
-    public void SaveNowMessage()
+    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
     {
-
-    }
-
-    public void LoadMessage()
-    {
-
+        _novelModel.OnClickUnderButton(menu);
     }
 }

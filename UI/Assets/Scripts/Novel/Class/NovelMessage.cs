@@ -4,7 +4,8 @@ using UnityEngine;
 public class NovelMessageData
 {
     List<NovelMessage> novelMessageData;
-    private int nextStoryNum = 0;
+    //読み込んでいないため-1から始める
+    private int nowStoryNum = -1;
 
     public NovelMessageData(CsvUtils csvUtils)
     {
@@ -24,25 +25,47 @@ public class NovelMessageData
             return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
         }
 
-        if (novelMessageData.Count <= nextStoryNum)
+        nowStoryNum++;
+
+        if (novelMessageData.Count <= nowStoryNum)
         {
-            nextStoryNum = 0;
+            nowStoryNum = 0;
             //Debug.Log("not next message");
             return novelMessageData[0];
         }
 
-        nextStoryNum++;
-        return novelMessageData[nextStoryNum - 1];
+        return novelMessageData[nowStoryNum];
+    }
+
+    public NovelMessage GetNowMessage()
+    {
+        if (novelMessageData.Count <= 0)
+        {
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
+        }
+
+        return novelMessageData[nowStoryNum];
+    }
+    public NovelMessage GetLoadMessage(int StoryNum)
+    {
+        if (novelMessageData.Count <= 0)
+        {
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
+        }
+
+        return novelMessageData[StoryNum];
     }
 }
 
 public class NovelMessage
 {
-    int storyNum;
-    string characterName;
-    string message;
-    string placeImage;
-    string characterImage;
+    private int storyNum;
+    private string characterName;
+    private string message;
+    private string placeImage;
+    private string characterImage;
 
     public NovelMessage(int storyNum, string characterName, string message, string placeImage, string characterImage)
     {
