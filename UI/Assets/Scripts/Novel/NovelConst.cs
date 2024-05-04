@@ -10,4 +10,9 @@ namespace Const
         public const string novelSaveDataFileName = "novelMessageData.json";
         public const int saveCount = 10;
     }
+
+    public static class ResourceConst
+    {
+        public const string novelDataPath = "NovelData";
+    }
 }
