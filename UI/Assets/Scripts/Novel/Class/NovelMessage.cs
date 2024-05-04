@@ -56,6 +56,7 @@ public class NovelMessageData
             return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
         }
 
+        nowStoryNum = StoryNum;
         return novelMessageData[StoryNum];
     }
 }
