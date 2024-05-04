@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
+using Util;
+
 public class NovelModel
 {
-    private readonly NovelMessageData _novelMessageData;
     private readonly ResourcesUtils _resourcesUtils;
     private readonly StringSplitUtils _stringSplitUtils;
-    private readonly PlayerDataUtils _playerDataUtils;
 
-    public NovelModel(ResourcesUtils resourcesUtils, CsvUtils csvUtils, StringSplitUtils stringSplitUtils, PlayerDataUtils playerDataUtils)
+    private readonly NovelMessageData _novelMessageData;
+    private readonly NovelSaveDataList _novelSaveDataList;
+
+    public NovelModel(ResourcesUtils resourcesUtils, CsvUtils csvUtils, StringSplitUtils stringSplitUtils)
     {
-        _novelMessageData = new NovelMessageData(csvUtils);
         _resourcesUtils = resourcesUtils;
         _stringSplitUtils = stringSplitUtils;
-        _playerDataUtils = playerDataUtils;
+
+        _novelMessageData = new NovelMessageData(csvUtils);
+        _novelSaveDataList = new NovelSaveDataList();
     }
 
     private readonly ReactiveProperty<NovelMessage> _sendNextMessage = new ReactiveProperty<NovelMessage>();
@@ -69,13 +73,13 @@ public class NovelModel
                 Save(1);
                 break;
             case NovelUnderButtonEnum.Menu.Load:
-                Load();
+                Load(1);
                 break;
             case NovelUnderButtonEnum.Menu.QuickSave:
                 Save(0);
                 break;
             case NovelUnderButtonEnum.Menu.QuickLoad:
-                Load();
+                Load(0);
                 break;
             case NovelUnderButtonEnum.Menu.Auto:
                 break;
@@ -95,12 +99,12 @@ public class NovelModel
     private void Save(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetNowMessage();
-        _playerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
+        PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
     }
 
-    private void Load()
+    private void Load(int saveNum)
     {
-        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_playerDataUtils.LoadNovelSaveData());
+        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
         SendMessage(novelMessage);
     }
 }

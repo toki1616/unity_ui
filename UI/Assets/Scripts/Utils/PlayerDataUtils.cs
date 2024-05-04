@@ -4,51 +4,41 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class PlayerDataUtils
+using Const;
+
+namespace Util
 {
-    private readonly FileUtils _fileUtils;
-
-    public PlayerDataUtils(FileUtils fileUtils)
+    public static class PlayerDataUtils
     {
-        _fileUtils = fileUtils;
-    }
+        public static void SaveNovelSaveData(NovelMessage novelMessage, int saveNum)
+        {
+            NovelSaveData novelSaveData = new NovelSaveData(saveNum: saveNum, storyNum: novelMessage.GetStoryNum());
+            string jsonStr = JsonUtility.ToJson(novelSaveData);
+            Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
+            FileUtils.WriteNovelSaveData(jsonStr, saveNum);
+        }
 
-    public void SaveNovelSaveData(NovelMessage novelMessage, int saveNum)
-    {
-        NovelSaveData novelSaveData = new NovelSaveData(storyNum: novelMessage.GetStoryNum(), saveNum: saveNum);
-        string jsonStr = JsonUtility.ToJson(novelSaveData);
-        Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
-        _fileUtils.WriteNovelSaveData(jsonStr);
-    }
+        public static NovelSaveData LoadNovelSaveData(int saveNum)
+        {
+            NovelSaveData novelSaveData = FileUtils.ReadNovelSaveData(saveNum);
+            return novelSaveData;
+        }
 
-    public int LoadNovelSaveData()
-    {
-        NovelSaveData novelSaveData = _fileUtils.ReadNovelSaveData();
-        return novelSaveData.GetStoryNum();
-    }
-}
+        public static List<NovelSaveData> LoadAllNovelSaveData()
+        {
+            List<NovelSaveData> novelSaveDataList = new List<NovelSaveData>();
 
-[Serializable]
-public class NovelSaveData {
-    [SerializeField]
-    private int saveNum;
+            for (int i = 0; i < SaveConst.saveCount; i++)
+            {
+                string path = Path.Combine(Application.persistentDataPath, $"{SaveConst.novelSaveDataFilePath}{i}/", SaveConst.novelSaveDataFileName);
+                if (FileUtils.ExistFile(path))
+                {
+                    NovelSaveData novelSaveData = LoadNovelSaveData(i);
+                    novelSaveDataList.Add(novelSaveData);
+                }
+            }
 
-    [SerializeField]
-    private int storyNum;
-
-    public NovelSaveData(int storyNum, int saveNum)
-    {
-        this.saveNum = saveNum;
-        this.storyNum = storyNum;
-    }
-
-    public int GetSaveNum()
-    {
-        return saveNum;
-    }
-
-    public int GetStoryNum()
-    {
-        return storyNum;
+            return novelSaveDataList;
+        }
     }
 }
