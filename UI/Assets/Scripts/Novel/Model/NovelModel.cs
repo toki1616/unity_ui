@@ -93,7 +93,8 @@ public class NovelModel
     private void Save(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetNowMessage();
-        PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
+        //PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
+        _novelSaveDataList.Save(novelMessage: novelMessage, saveNum: saveNum);
     }
 
     private void Load(int saveNum)

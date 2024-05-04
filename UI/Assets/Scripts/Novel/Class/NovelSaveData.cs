@@ -17,7 +17,13 @@ public class NovelSaveDataList
 
     public int GetLoadStoryNum(int saveNum)
     {
-        return novelSaveDataList.Find(novelSaveData => novelSaveData.GetSaveNum() == saveNum).GetStoryNum();
+        return novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum).StoryNum;
+    }
+
+    public void Save(NovelMessage novelMessage, int saveNum)
+    {
+        novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum).StoryNum = novelMessage.GetStoryNum();
+        PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
     }
 }
 
@@ -26,23 +32,35 @@ public class NovelSaveData
 {
     [SerializeField]
     private int saveNum;
+    public int SaveNum
+    {
+        get
+        {
+            return saveNum;
+        }
+        set
+        {
+            saveNum = value;
+        }
+    }
 
     [SerializeField]
     private int storyNum;
+    public int StoryNum
+    {
+        get
+        {
+            return storyNum;
+        }
+        set
+        {
+            storyNum = value;
+        }
+    }
 
     public NovelSaveData(int saveNum, int storyNum)
     {
         this.saveNum = saveNum;
         this.storyNum = storyNum;
-    }
-
-    public int GetSaveNum()
-    {
-        return saveNum;
-    }
-
-    public int GetStoryNum()
-    {
-        return storyNum;
     }
 }
