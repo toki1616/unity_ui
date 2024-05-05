@@ -95,7 +95,7 @@ public class NovelModel
     public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
     {
         NovelSaveData novelSaveData = _novelSaveDataList.GetNovelSaveData(saveNum);
-        Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
+        //Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
 
         if (!novelSaveData.isCanLoad())
         {
@@ -106,29 +106,6 @@ public class NovelModel
         //Debug.Log($"NovelModel : CreateSaveButton : message : {novelMessage.GetMessage()}");
         NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
         return novelSaveDataButtonData;
-    }
-
-    private readonly ReactiveProperty<NovelSaveDataButtonData> _sendSaveButtonUseNovelMessage = new ReactiveProperty<NovelSaveDataButtonData>();
-    public IReadOnlyReactiveProperty<NovelSaveDataButtonData> SendSaveDataButtonUseNovelMessage => _sendSaveButtonUseNovelMessage;
-    public void CreateSaveButton()
-    {
-        //Debug.Log($"NovelModel : CreateSaveButton : {saveNum}");
-
-        for (int saveNum = SaveConst.startSelectSaveNum; saveNum < SaveConst.saveCount; saveNum++)
-        {
-            NovelSaveData novelSaveData = _novelSaveDataList.GetNovelSaveData(saveNum);
-            if (!novelSaveData.isCanLoad())
-            {
-                continue;
-            }
-
-            Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
-
-            NovelMessage novelMessage = _novelMessageData.GetLoadMessage(novelSaveData.StoryNum);
-            //Debug.Log($"NovelModel : CreateSaveButton : message : {novelMessage.GetMessage()}");
-            NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
-            _sendSaveButtonUseNovelMessage.SetValueAndForceNotify(novelSaveDataButtonData);
-        }
     }
 
     public void OnClickSaveDataButton(int saveNum)

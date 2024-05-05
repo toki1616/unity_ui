@@ -49,16 +49,6 @@ public class NovelPresenter
         return _novelModel.GetSaveDataButtonData(saveNum);
     }
 
-    public void CreateSaveDataButton()
-    {
-        _novelModel.CreateSaveButton();
-    }
-    public IObservable<NovelSaveDataButtonData> sendSaveDataButtonUseNovelMessage =>
-            _novelModel.SendSaveDataButtonUseNovelMessage
-            .Do(data => Debug.Log($"sendSaveDataButtonUseNovelMessage : save : {data.GetNovelSaveData().SaveNum} : Story : {data.GetNovelSaveData().StoryNum}"))
-            .Publish()
-            .RefCount();
-
     public void OnClickSaveDataButton(int saveNum)
     {
         _novelModel.OnClickSaveDataButton(saveNum);
