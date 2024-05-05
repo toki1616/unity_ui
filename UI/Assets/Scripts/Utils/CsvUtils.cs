@@ -35,7 +35,7 @@ namespace Util
             {
                 // データの表示
                 //Debug.Log($"csv : storyNum ：{csvData[i][0]} ,characterName ：{csvData[i][1]} ,message ：{csvData[i][2]} ,placeImage ：{csvData[i][3]} ,characterImage ：{csvData[i][4]}");
-                NovelMessage novelMessage = new NovelMessage(storyNum: int.Parse(csvData[i][0]), characterName: csvData[i][1], message: csvData[i][2], placeImage: csvData[i][3], characterImage: csvData[i][4]);
+                NovelMessage novelMessage = new NovelMessage(storyNum: int.Parse(csvData[i][0]), characterName: csvData[i][1], message: csvData[i][2], placeImagePath: csvData[i][3], characterImagePath: csvData[i][4]);
                 //Debug.Log($"novelMessage : storyNum ：{novelMessage.GetStoryNum()} ,characterName ：{novelMessage.GetCharacterName()} ,message ：{novelMessage.GetMessage()} ,placeImage ：{novelMessage.GetPlaceImage()} ,characterImage ：{novelMessage.GetCharacterImage()}");
                 novelData.Add(novelMessage);
             }

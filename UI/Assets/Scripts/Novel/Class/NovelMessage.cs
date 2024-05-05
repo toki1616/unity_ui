@@ -23,7 +23,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
         }
 
         nowStoryNum++;
@@ -43,7 +43,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
         }
 
         return novelMessageData[nowStoryNum];
@@ -53,7 +53,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
         }
 
         nowStoryNum = StoryNum;
@@ -66,16 +66,16 @@ public class NovelMessage
     private int storyNum;
     private string characterName;
     private string message;
-    private string placeImage;
-    private string characterImage;
+    private string placeImagePath;
+    private string characterImagePath;
 
-    public NovelMessage(int storyNum, string characterName, string message, string placeImage, string characterImage)
+    public NovelMessage(int storyNum, string characterName, string message, string placeImagePath, string characterImagePath)
     {
         this.storyNum = storyNum;
         this.characterName = characterName;
         this.message = message;
-        this.placeImage = placeImage;
-        this.characterImage = characterImage;
+        this.placeImagePath = placeImagePath;
+        this.characterImagePath = characterImagePath;
     }
 
     public int GetStoryNum()
@@ -95,11 +95,11 @@ public class NovelMessage
 
     public string GetPlaceImage()
     {
-        return placeImage;
+        return placeImagePath;
     }
 
     public string GetCharacterImage()
     {
-        return characterImage;
+        return characterImagePath;
     }
 }

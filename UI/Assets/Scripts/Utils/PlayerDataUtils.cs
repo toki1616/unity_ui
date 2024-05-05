@@ -28,7 +28,7 @@ namespace Util
         {
             List<NovelSaveData> novelSaveDataList = new List<NovelSaveData>();
 
-            for (int i = 0; i < SaveConst.saveCount; i++)
+            for (int i = SaveConst.startSelectSaveNum; i < SaveConst.saveCount; i++)
             {
                 string path = Path.Combine(Application.persistentDataPath, $"{SaveConst.novelSaveDataFilePath}{i}/", SaveConst.novelSaveDataFileName);
                 if (FileUtils.ExistFile(path))
