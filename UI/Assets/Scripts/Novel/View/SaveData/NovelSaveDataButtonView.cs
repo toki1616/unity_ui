@@ -46,6 +46,8 @@ public class NovelSaveDataButtonView : MonoBehaviour
         button.onClick.AsObservable()
             .Subscribe(_ => onClickButton())
             .AddTo(gameObject);
+
+        _novelPresenter.sendSaveDataButtonData.Subscribe(_ => UpdateNovelSaveDataButtonData(_)).AddTo(this);
     }
 
     public void SetSaveNum(int saveNum)
@@ -68,6 +70,16 @@ public class NovelSaveDataButtonView : MonoBehaviour
         SetBackgroundImage(novelSaveDataButtonData.GetBackgroundImage());
         CreateCharacter(novelSaveDataButtonData.GetCharacterImageList());
         UpdateMessage(novelSaveDataButtonData.GetNovelMessage().GetMessage());
+    }
+
+    private void UpdateNovelSaveDataButtonData(NovelSaveDataButtonData novelSaveDataButtonData)
+    {
+        if (novelSaveDataButtonData.GetNovelSaveData().SaveNum != saveNum)
+        {
+            return;
+        }
+
+        SetNovelSaveDataButtonData(novelSaveDataButtonData);
     }
 
     private void SetBackgroundImage(Sprite image)

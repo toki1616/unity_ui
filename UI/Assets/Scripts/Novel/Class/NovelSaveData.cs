@@ -42,15 +42,22 @@ public class NovelSaveDataList
         }
     }
 
-    public void Save(NovelMessage novelMessage, int saveNum)
+    public NovelSaveData SaveAndGetSaveData(NovelMessage novelMessage, int saveNum)
     {
-        var foundData = novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum);
+        NovelSaveData newSaveData = new NovelSaveData(saveNum: saveNum, storyNum: novelMessage.GetStoryNum());
+
+        NovelSaveData foundData = novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum);
         if (foundData != null)
         {
-            foundData.StoryNum = novelMessage.GetStoryNum();
+            foundData = newSaveData;
+        }
+        else
+        {
+            novelSaveDataList.Add(newSaveData);
         }
 
-        PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
+        PlayerDataUtils.SaveNovelSaveData(newSaveData);
+        return newSaveData;
     }
 }
 

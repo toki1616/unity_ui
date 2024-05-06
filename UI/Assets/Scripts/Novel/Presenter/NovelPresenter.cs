@@ -50,6 +50,13 @@ public class NovelPresenter
             .Publish()
             .RefCount();
 
+    public IObservable<NovelSaveDataButtonData> sendSaveDataButtonData =>
+            _novelModel.SendSaveDataButtonData
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Skip(1)
+            .Publish()
+            .RefCount();
+
     //SaveButton
     public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
     {
