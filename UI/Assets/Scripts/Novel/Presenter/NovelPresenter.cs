@@ -46,7 +46,7 @@ public class NovelPresenter
     //SaveData
     public IObservable<bool> activeSaveDataUI =>
             _novelModel.ActiveSaveDataUI
-            .Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
             .Publish()
             .RefCount();
 
