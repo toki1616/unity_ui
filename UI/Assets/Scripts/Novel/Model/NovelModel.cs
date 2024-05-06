@@ -125,7 +125,7 @@ public class NovelModel
             return new NovelSaveDataButtonData(novelSaveData);
         }
 
-        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(novelSaveData.StoryNum);
+        NovelMessage novelMessage = _novelMessageData.GetSaveDataNovelMessage(novelSaveData.StoryNum);
         //Debug.Log($"NovelModel : CreateSaveButton : message : {novelMessage.GetMessage()}");
         NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
         return novelSaveDataButtonData;

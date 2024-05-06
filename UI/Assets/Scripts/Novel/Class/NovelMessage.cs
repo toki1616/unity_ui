@@ -59,6 +59,17 @@ public class NovelMessageData
         nowStoryNum = StoryNum;
         return novelMessageData[StoryNum];
     }
+
+    public NovelMessage GetSaveDataNovelMessage(int StoryNum)
+    {
+        if (novelMessageData.Count <= 0)
+        {
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+        }
+
+        return novelMessageData[StoryNum];
+    }
 }
 
 public class NovelMessage
