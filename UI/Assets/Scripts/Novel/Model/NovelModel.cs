@@ -108,7 +108,6 @@ public class NovelModel
         _activeSaveDataUI.SetValueAndForceNotify(false);
     }
 
-    //
     public void OnClickCloseSaveData()
     {
         CloseSaveDataUI();
@@ -147,11 +146,14 @@ public class NovelModel
         }
     }
 
+    private readonly ReactiveProperty<NovelSaveDataButtonData> _sendSaveDataButtonData = new ReactiveProperty<NovelSaveDataButtonData>();
+    public IReadOnlyReactiveProperty<NovelSaveDataButtonData> SendSaveDataButtonData => _sendSaveDataButtonData;
     private void Save(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetNowMessage();
-        //PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
-        _novelSaveDataList.Save(novelMessage: novelMessage, saveNum: saveNum);
+        NovelSaveData novelSaveData = _novelSaveDataList.SaveAndGetSaveData(novelMessage: novelMessage, saveNum: saveNum);
+        NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
+        _sendSaveDataButtonData.SetValueAndForceNotify(novelSaveDataButtonData);
     }
 
     private void Load(int saveNum)

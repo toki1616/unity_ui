@@ -10,12 +10,11 @@ namespace Util
 {
     public static class PlayerDataUtils
     {
-        public static void SaveNovelSaveData(NovelMessage novelMessage, int saveNum)
+        public static void SaveNovelSaveData(NovelSaveData novelSaveData)
         {
-            NovelSaveData novelSaveData = new NovelSaveData(saveNum: saveNum, storyNum: novelMessage.GetStoryNum());
             string jsonStr = JsonUtility.ToJson(novelSaveData);
-            Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
-            FileUtils.WriteNovelSaveData(jsonStr, saveNum);
+            //Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
+            FileUtils.WriteNovelSaveData(jsonStr, novelSaveData.SaveNum);
         }
 
         public static NovelSaveData LoadNovelSaveData(int saveNum)
