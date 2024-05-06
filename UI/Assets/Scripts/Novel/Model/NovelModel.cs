@@ -134,7 +134,17 @@ public class NovelModel
     public void OnClickSaveDataButton(int saveNum)
     {
         //Debug.Log($"NovelModel : OnClickLoadButton : {saveNum}");
-        //Load(saveNum);
+        switch (saveDataMode)
+        {
+            case NovelDataEnum.SaveDataMode.Save:
+                Save(saveNum);
+                break;
+            case NovelDataEnum.SaveDataMode.Load:
+                Load(saveNum);
+                break;
+            default:
+                break;
+        }
     }
 
     private void Save(int saveNum)

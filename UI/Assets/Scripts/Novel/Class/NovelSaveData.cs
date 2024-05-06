@@ -44,7 +44,12 @@ public class NovelSaveDataList
 
     public void Save(NovelMessage novelMessage, int saveNum)
     {
-        novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum).StoryNum = novelMessage.GetStoryNum();
+        var foundData = novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum);
+        if (foundData != null)
+        {
+            foundData.StoryNum = novelMessage.GetStoryNum();
+        }
+
         PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
     }
 }
