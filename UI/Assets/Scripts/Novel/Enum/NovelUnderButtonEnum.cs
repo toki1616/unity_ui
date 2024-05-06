@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class NovelDataEnum
+{
+    public enum SaveDataMode
+    {
+        Save,
+        Load,
+    }
+}
+
 public class NovelUnderButtonEnum
 {
     public enum Menu

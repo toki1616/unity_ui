@@ -65,10 +65,10 @@ public class NovelModel
         switch (menu)
         {
             case NovelUnderButtonEnum.Menu.Save:
-                Save(1);
+                OpenSaveDataUI(NovelDataEnum.SaveDataMode.Save);
                 break;
             case NovelUnderButtonEnum.Menu.Load:
-                Load(1);
+                OpenSaveDataUI(NovelDataEnum.SaveDataMode.Load);
                 break;
             case NovelUnderButtonEnum.Menu.QuickSave:
                 Save(0);
@@ -89,6 +89,29 @@ public class NovelModel
             default:
                 break;
         }
+    }
+
+    //SaveData
+    private readonly ReactiveProperty<bool> _activeSaveDataUI = new ReactiveProperty<bool>();
+    public IReadOnlyReactiveProperty<bool> ActiveSaveDataUI => _activeSaveDataUI;
+
+    private NovelDataEnum.SaveDataMode saveDataMode = NovelDataEnum.SaveDataMode.Save;
+
+    private void OpenSaveDataUI(NovelDataEnum.SaveDataMode mode)
+    {
+        saveDataMode = mode;
+        _activeSaveDataUI.SetValueAndForceNotify(true);
+    }
+
+    private void CloseSaveDataUI()
+    {
+        _activeSaveDataUI.SetValueAndForceNotify(false);
+    }
+
+    //
+    public void OnClickCloseSaveData()
+    {
+        CloseSaveDataUI();
     }
 
     //SaveDataButton

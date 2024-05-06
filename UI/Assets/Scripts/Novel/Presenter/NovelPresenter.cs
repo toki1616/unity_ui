@@ -43,10 +43,22 @@ public class NovelPresenter
         _novelModel.OnClickUnderButton(menu);
     }
 
+    //SaveData
+    public IObservable<bool> activeSaveDataUI =>
+            _novelModel.ActiveSaveDataUI
+            .Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
+
     //SaveButton
     public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
     {
         return _novelModel.GetSaveDataButtonData(saveNum);
+    }
+
+    public void OnClickCloseSaveData()
+    {
+        _novelModel.OnClickCloseSaveData();
     }
 
     public void OnClickSaveDataButton(int saveNum)
