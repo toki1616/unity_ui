@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
+using Util;
+using Const;
+
 public class NovelModel
 {
     private readonly NovelMessageData _novelMessageData;
-    private readonly ResourcesUtils _resourcesUtils;
-    private readonly StringSplitUtils _stringSplitUtils;
+    private readonly NovelSaveDataList _novelSaveDataList;
 
-    public NovelModel(ResourcesUtils resourcesUtils, CsvUtils csvUtils, StringSplitUtils stringSplitUtils)
+    public NovelModel()
     {
-        _novelMessageData = new NovelMessageData(csvUtils);
-        _resourcesUtils = resourcesUtils;
-        _stringSplitUtils = stringSplitUtils;
+        _novelMessageData = new NovelMessageData();
+        _novelSaveDataList = new NovelSaveDataList();
     }
 
     private readonly ReactiveProperty<NovelMessage> _sendNextMessage = new ReactiveProperty<NovelMessage>();
@@ -29,26 +30,133 @@ public class NovelModel
     {
         //Debug.Log($"test : NovelModel : SendNextMessageText");
         NovelMessage novelMessage = _novelMessageData.GetNextMessage();
+        SendMessage(novelMessage);
+    }
+
+    private void SendMessage(NovelMessage novelMessage)
+    {
         //Debug.Log($"storyNum ：{novelMessage.GetStoryNum()} ,characterName ：{novelMessage.GetCharacterName()} ,novelMessage ：{novelMessage.GetMessage()} ,placeImage ：{novelMessage.GetPlaceImage()} ,characterImage ：{novelMessage.GetCharacterImage()}");
 
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(novelMessage);
 
         //BackgroundImage
-        Sprite bgImage = _resourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
+        Sprite bgImage = ResourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
         _sendBackGroundImage.SetValueAndForceNotify(bgImage);
 
         //characterImage
-        string[] characterImagePaths = _stringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
+        string[] characterImagePaths = StringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
         List<Sprite> characterImageList = new List<Sprite>();
 
         foreach (string path in characterImagePaths)
         {
             //Debug.Log($"path : {path}");
-            Sprite characterImage = _resourcesUtils.GetNovelCharacterImage(path: path);
+            Sprite characterImage = ResourcesUtils.GetNovelCharacterImage(path: path);
             characterImageList.Add(characterImage);
         }
 
         _sendCharacterImage.SetValueAndForceNotify(characterImageList);
+    }
+
+    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
+    {
+        //Debug.Log($"NovelModel : click : {menu}");
+
+        switch (menu)
+        {
+            case NovelUnderButtonEnum.Menu.Save:
+                OpenSaveDataUI(NovelDataEnum.SaveDataMode.Save);
+                break;
+            case NovelUnderButtonEnum.Menu.Load:
+                OpenSaveDataUI(NovelDataEnum.SaveDataMode.Load);
+                break;
+            case NovelUnderButtonEnum.Menu.QuickSave:
+                Save(0);
+                break;
+            case NovelUnderButtonEnum.Menu.QuickLoad:
+                Load(0);
+                break;
+            case NovelUnderButtonEnum.Menu.Auto:
+                break;
+            case NovelUnderButtonEnum.Menu.Skip:
+                break;
+            case NovelUnderButtonEnum.Menu.Log:
+                break;
+            case NovelUnderButtonEnum.Menu.Option:
+                break;
+            case NovelUnderButtonEnum.Menu.Hidden:
+                break;
+            default:
+                break;
+        }
+    }
+
+    //SaveData
+    private readonly ReactiveProperty<bool> _activeSaveDataUI = new ReactiveProperty<bool>();
+    public IReadOnlyReactiveProperty<bool> ActiveSaveDataUI => _activeSaveDataUI;
+
+    private NovelDataEnum.SaveDataMode saveDataMode = NovelDataEnum.SaveDataMode.Save;
+
+    private void OpenSaveDataUI(NovelDataEnum.SaveDataMode mode)
+    {
+        saveDataMode = mode;
+        _activeSaveDataUI.SetValueAndForceNotify(true);
+    }
+
+    private void CloseSaveDataUI()
+    {
+        _activeSaveDataUI.SetValueAndForceNotify(false);
+    }
+
+    //
+    public void OnClickCloseSaveData()
+    {
+        CloseSaveDataUI();
+    }
+
+    //SaveDataButton
+    public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
+    {
+        NovelSaveData novelSaveData = _novelSaveDataList.GetNovelSaveData(saveNum);
+        //Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
+
+        if (!novelSaveData.isCanLoad())
+        {
+            return new NovelSaveDataButtonData(novelSaveData);
+        }
+
+        NovelMessage novelMessage = _novelMessageData.GetSaveDataNovelMessage(novelSaveData.StoryNum);
+        //Debug.Log($"NovelModel : CreateSaveButton : message : {novelMessage.GetMessage()}");
+        NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
+        return novelSaveDataButtonData;
+    }
+
+    public void OnClickSaveDataButton(int saveNum)
+    {
+        //Debug.Log($"NovelModel : OnClickLoadButton : {saveNum}");
+        switch (saveDataMode)
+        {
+            case NovelDataEnum.SaveDataMode.Save:
+                Save(saveNum);
+                break;
+            case NovelDataEnum.SaveDataMode.Load:
+                Load(saveNum);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Save(int saveNum)
+    {
+        NovelMessage novelMessage = _novelMessageData.GetNowMessage();
+        //PlayerDataUtils.SaveNovelSaveData(novelMessage: novelMessage, saveNum: saveNum);
+        _novelSaveDataList.Save(novelMessage: novelMessage, saveNum: saveNum);
+    }
+
+    private void Load(int saveNum)
+    {
+        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
+        SendMessage(novelMessage);
     }
 }

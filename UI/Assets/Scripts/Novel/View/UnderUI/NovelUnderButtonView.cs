@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 using UniRx;
 
 public class NovelUnderButtonView : MonoBehaviour
 {
+    private NovelPresenter _novelPresenter;
+
+    [Inject]
+    public void Construct(NovelPresenter novelPresenter)
+    {
+        _novelPresenter = novelPresenter;
+    }
+
     [SerializeField]
     private Button _button;
 
@@ -27,12 +36,6 @@ public class NovelUnderButtonView : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetMenuEnum(NovelUnderButtonEnum.Menu menuEnum)
     {
         menu = menuEnum;
@@ -48,6 +51,7 @@ public class NovelUnderButtonView : MonoBehaviour
 
     private void onClickButton()
     {
-        Debug.Log($"test : click : {menu}");
+        //Debug.Log($"NovelUnderButtonView : click : {menu}");
+        _novelPresenter.OnClickUnderButton(menu);
     }
 }

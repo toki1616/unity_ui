@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+using Util;
 public class NovelMessageData
 {
     List<NovelMessage> novelMessageData;
-    private int nextStoryNum = 0;
+    //読み込んでいないため-1から始める
+    private int nowStoryNum = -1;
 
-    public NovelMessageData(CsvUtils csvUtils)
+    public NovelMessageData()
     {
-        novelMessageData = csvUtils.ReadNovelCsvFile();
+        novelMessageData = CsvUtils.ReadNovelCsvFile();
 
         //foreach (NovelMessage message in novelMessageData)
         //{
@@ -21,36 +23,70 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImage: "", characterImage: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
         }
 
-        if (novelMessageData.Count <= nextStoryNum)
+        nowStoryNum++;
+
+        if (novelMessageData.Count <= nowStoryNum)
         {
-            nextStoryNum = 0;
+            nowStoryNum = 0;
             //Debug.Log("not next message");
             return novelMessageData[0];
         }
 
-        nextStoryNum++;
-        return novelMessageData[nextStoryNum - 1];
+        return novelMessageData[nowStoryNum];
+    }
+
+    public NovelMessage GetNowMessage()
+    {
+        if (novelMessageData.Count <= 0)
+        {
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+        }
+
+        return novelMessageData[nowStoryNum];
+    }
+    public NovelMessage GetLoadMessage(int StoryNum)
+    {
+        if (novelMessageData.Count <= 0)
+        {
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+        }
+
+        nowStoryNum = StoryNum;
+        return novelMessageData[StoryNum];
+    }
+
+    public NovelMessage GetSaveDataNovelMessage(int StoryNum)
+    {
+        if (novelMessageData.Count <= 0)
+        {
+            //Debug.Log("not message data");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+        }
+
+        return novelMessageData[StoryNum];
     }
 }
 
 public class NovelMessage
 {
-    int storyNum;
-    string characterName;
-    string message;
-    string placeImage;
-    string characterImage;
+    private int storyNum;
+    private string characterName;
+    private string message;
+    private string placeImagePath;
+    private string characterImagePath;
 
-    public NovelMessage(int storyNum, string characterName, string message, string placeImage, string characterImage)
+    public NovelMessage(int storyNum, string characterName, string message, string placeImagePath, string characterImagePath)
     {
         this.storyNum = storyNum;
         this.characterName = characterName;
         this.message = message;
-        this.placeImage = placeImage;
-        this.characterImage = characterImage;
+        this.placeImagePath = placeImagePath;
+        this.characterImagePath = characterImagePath;
     }
 
     public int GetStoryNum()
@@ -70,11 +106,11 @@ public class NovelMessage
 
     public string GetPlaceImage()
     {
-        return placeImage;
+        return placeImagePath;
     }
 
     public string GetCharacterImage()
     {
-        return characterImage;
+        return characterImagePath;
     }
 }

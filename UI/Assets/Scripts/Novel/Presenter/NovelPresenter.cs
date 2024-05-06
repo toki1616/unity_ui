@@ -38,13 +38,31 @@ public class NovelPresenter
             .Skip(1)    //登録時に走らないように
             .Share();
 
-    public void SaveNowMessage()
+    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
     {
-
+        _novelModel.OnClickUnderButton(menu);
     }
 
-    public void LoadMessage()
-    {
+    //SaveData
+    public IObservable<bool> activeSaveDataUI =>
+            _novelModel.ActiveSaveDataUI
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
 
+    //SaveButton
+    public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
+    {
+        return _novelModel.GetSaveDataButtonData(saveNum);
+    }
+
+    public void OnClickCloseSaveData()
+    {
+        _novelModel.OnClickCloseSaveData();
+    }
+
+    public void OnClickSaveDataButton(int saveNum)
+    {
+        _novelModel.OnClickSaveDataButton(saveNum);
     }
 }
