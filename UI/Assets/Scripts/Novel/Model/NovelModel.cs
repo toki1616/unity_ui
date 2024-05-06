@@ -71,10 +71,10 @@ public class NovelModel
                 OpenSaveDataUI(NovelDataEnum.SaveDataMode.Load);
                 break;
             case NovelUnderButtonEnum.Menu.QuickSave:
-                Save(0);
+                Save(SaveConst.quickSaveNum);
                 break;
             case NovelUnderButtonEnum.Menu.QuickLoad:
-                Load(0);
+                Load(SaveConst.quickSaveNum);
                 break;
             case NovelUnderButtonEnum.Menu.Auto:
                 break;
