@@ -36,12 +36,6 @@ public class NovelUnderButtonView : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetMenuEnum(NovelUnderButtonEnum.Menu menuEnum)
     {
         menu = menuEnum;

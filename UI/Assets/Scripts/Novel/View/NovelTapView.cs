@@ -29,12 +29,6 @@ public class NovelTapView : MonoBehaviour
                     .AddTo(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnPointerDown(PointerEventData pointerEventData)
     {
         //Debug.Log(pointerEventData.position);

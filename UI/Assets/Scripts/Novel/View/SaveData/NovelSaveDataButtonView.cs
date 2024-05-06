@@ -48,12 +48,6 @@ public class NovelSaveDataButtonView : MonoBehaviour
             .AddTo(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SetSaveNum(int saveNum)
     {
         this.saveNum = saveNum;

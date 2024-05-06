@@ -29,11 +29,6 @@ public class NovelUIView : MonoBehaviour
         _novelPresenter.activeSaveDataUI.Subscribe(_ => SaveDataUIChangeActive(_)).AddTo(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OptionUIChangeActive(bool isActive)
     {

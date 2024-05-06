@@ -28,12 +28,6 @@ public class NovelCreateSaveDataButtonView : MonoBehaviour
         CreateSaveButton();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void CreateSaveButton()
     {
         //Debug.Log($"NovelSaveButtonView : ReceivedBackgroundImage");

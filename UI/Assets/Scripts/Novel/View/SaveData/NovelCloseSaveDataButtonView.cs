@@ -29,12 +29,6 @@ public class NovelCloseSaveDataButtonView : MonoBehaviour
             .AddTo(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void onClickButton()
     {
         //Debug.Log($"NovelSaveDataButtonView : saveNum : {saveNum}");

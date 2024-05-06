@@ -15,12 +15,6 @@ public class NovelUnderUIView : MonoBehaviour
         CreateUnderButton();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void CreateUnderButton()
     {
         Array array = Enum.GetValues(typeof(NovelUnderButtonEnum.Menu));
