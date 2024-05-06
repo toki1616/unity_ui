@@ -15,7 +15,7 @@ namespace Const
         public const string novelSaveDataFileName = "novelMessageData.json";
         public const int saveCount = 10;
         public const int startSelectSaveNum = 0;
-        public const int quickSaveNum = 100;
+        public const int quickSaveNum = -1;
     }
 
     public static class ResourceConst
