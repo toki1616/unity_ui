@@ -14,7 +14,7 @@ public class NovelMessageData
 
         //foreach (NovelMessage message in novelMessageData)
         //{
-        //    Debug.Log($"storyNum ：{message.GetStoryNum()} ,characterName ：{message.GetCharacterName()} ,message ：{message.GetMessage()} ,placeImage ：{message.GetPlaceImage()} ,characterImage ：{message.GetCharacterImage()}");
+        //    Debug.Log($"NovelMessage : storyNum ：{message.GetStoryNum()}, route ：{message.GetRoute()}, message ：{message.GetMessage()}, selectMessage ：{message.GetSelectMessage()}, characterName ：{message.GetCharacterName()}, characterImagePath : {message.GetCharacterImagePath()}, backgroundImagePath : {message.GetBackgroundImagePath()}");
         //}
     }
 
@@ -23,7 +23,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
         }
 
         nowStoryNum++;
@@ -35,7 +35,8 @@ public class NovelMessageData
             return novelMessageData[0];
         }
 
-        return novelMessageData[nowStoryNum];
+        var novelMessage = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == nowStoryNum)[0];
+        return novelMessage;
     }
 
     public NovelMessage GetNowMessage()
@@ -43,7 +44,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
         }
 
         return novelMessageData[nowStoryNum];
@@ -53,7 +54,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
         }
 
         nowStoryNum = StoryNum;
@@ -65,7 +66,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", placeImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
         }
 
         return novelMessageData[StoryNum];
@@ -75,18 +76,53 @@ public class NovelMessageData
 public class NovelMessage
 {
     private int storyNum;
-    private string characterName;
+    private string route;
     private string message;
-    private string placeImagePath;
+    private string[] selectMessages;
+    private string characterName;
+    private string backgroundImagePath;
     private string characterImagePath;
 
-    public NovelMessage(int storyNum, string characterName, string message, string placeImagePath, string characterImagePath)
+    private Sprite backgroundImage;
+    private List<Sprite> characterImageList = new List<Sprite>();
+
+    public NovelMessage(int storyNum, string characterName, string message, string backgroundImagePath, string characterImagePath)
     {
         this.storyNum = storyNum;
         this.characterName = characterName;
         this.message = message;
-        this.placeImagePath = placeImagePath;
+        this.backgroundImagePath = backgroundImagePath;
         this.characterImagePath = characterImagePath;
+    }
+
+    public NovelMessage(int storyNum, string route, string message, string selectMessage, string characterName, string backgroundImagePath, string characterImagePath)
+    {
+        this.storyNum = storyNum;
+        this.route = route;
+        this.message = message;
+        this.selectMessages = StringSplitUtils.GetStringArraySplitAnd(selectMessage);
+        this.characterName = characterName;
+        this.backgroundImagePath = backgroundImagePath;
+        this.characterImagePath = characterImagePath;
+
+        //Debug.Log($"NovelMessage : storyNum ：{this.storyNum}, route ：{this.route}, message ：{this.message}, selectMessage ：{selectMessage}, characterName ：{this.characterName}, characterImagePath : {this.characterImagePath}, backgroundImagePath : {this.backgroundImagePath}");
+        //foreach (string value in selectMessages)
+        //{
+        //    Debug.Log($"selectMessage : {value}");
+        //}
+
+        backgroundImage = ResourcesUtils.GetNovelBackgroundImage(path: backgroundImagePath);
+        //Debug.Log($"NovelMessage : backgroundImage : {backgroundImage.name}");
+
+        //characterImage
+        string[] characterImagePaths = StringSplitUtils.GetStringArraySplitAnd(characterImagePath);
+        foreach (string path in characterImagePaths)
+        {
+            //Debug.Log($"path : {path}");
+            Sprite characterImage = ResourcesUtils.GetNovelCharacterImage(path: path);
+            //Debug.Log($"NovelMessage : characterImage : {characterImage.name}");
+            characterImageList.Add(characterImage);
+        }
     }
 
     public int GetStoryNum()
@@ -94,9 +130,9 @@ public class NovelMessage
         return storyNum;
     }
 
-    public string GetCharacterName()
+    public string GetRoute()
     {
-        return characterName;
+        return route;
     }
 
     public string GetMessage()
@@ -104,13 +140,33 @@ public class NovelMessage
         return message;
     }
 
-    public string GetPlaceImage()
+    public string[] GetSelectMessage()
     {
-        return placeImagePath;
+        return selectMessages;
     }
 
-    public string GetCharacterImage()
+    public string GetCharacterName()
+    {
+        return characterName;
+    }
+
+    public string GetBackgroundImagePath()
+    {
+        return backgroundImagePath;
+    }
+
+    public string GetCharacterImagePath()
     {
         return characterImagePath;
+    }
+
+    public Sprite GetBackgroundImage()
+    {
+        return backgroundImage;
+    }
+
+    public List<Sprite> GetCharacterImageList()
+    {
+        return characterImageList;
     }
 }

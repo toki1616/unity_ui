@@ -35,27 +35,16 @@ public class NovelModel
 
     private void SendMessage(NovelMessage novelMessage)
     {
-        //Debug.Log($"storyNum ：{novelMessage.GetStoryNum()} ,characterName ：{novelMessage.GetCharacterName()} ,novelMessage ：{novelMessage.GetMessage()} ,placeImage ：{novelMessage.GetPlaceImage()} ,characterImage ：{novelMessage.GetCharacterImage()}");
+        //Debug.Log($"NovelMessage : storyNum ：{novelMessage.GetStoryNum()}, route ：{novelMessage.GetRoute()}, message ：{novelMessage.GetMessage()}, selectMessage ：{novelMessage.GetSelectMessage()}, characterName ：{novelMessage.GetCharacterName()}, characterImagePath : {novelMessage.GetCharacterImageList()}, backgroundImagePath : {novelMessage.GetBackgroundImage().name}");
 
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(novelMessage);
 
         //BackgroundImage
-        Sprite bgImage = ResourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
-        _sendBackGroundImage.SetValueAndForceNotify(bgImage);
+        _sendBackGroundImage.SetValueAndForceNotify(novelMessage.GetBackgroundImage());
 
         //characterImage
-        string[] characterImagePaths = StringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
-        List<Sprite> characterImageList = new List<Sprite>();
-
-        foreach (string path in characterImagePaths)
-        {
-            //Debug.Log($"path : {path}");
-            Sprite characterImage = ResourcesUtils.GetNovelCharacterImage(path: path);
-            characterImageList.Add(characterImage);
-        }
-
-        _sendCharacterImage.SetValueAndForceNotify(characterImageList);
+        _sendCharacterImage.SetValueAndForceNotify(novelMessage.GetCharacterImageList());
     }
 
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)

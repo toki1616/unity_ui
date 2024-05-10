@@ -6,7 +6,7 @@ namespace Util
 {
     public static class StringSplitUtils
     {
-        public static string[] GetSplitNovelCharacterImagePaths(string value)
+        public static string[] GetStringArraySplitAnd(string value)
         {
             if (!value.Contains("&"))
             {

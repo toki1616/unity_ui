@@ -34,9 +34,9 @@ namespace Util
             for (int i = 1; i < csvData.Count; i++)
             {
                 // データの表示
-                //Debug.Log($"csv : storyNum ：{csvData[i][0]} ,characterName ：{csvData[i][1]} ,message ：{csvData[i][2]} ,placeImage ：{csvData[i][3]} ,characterImage ：{csvData[i][4]}");
-                NovelMessage novelMessage = new NovelMessage(storyNum: int.Parse(csvData[i][0]), characterName: csvData[i][1], message: csvData[i][2], placeImagePath: csvData[i][3], characterImagePath: csvData[i][4]);
-                //Debug.Log($"novelMessage : storyNum ：{novelMessage.GetStoryNum()} ,characterName ：{novelMessage.GetCharacterName()} ,message ：{novelMessage.GetMessage()} ,placeImage ：{novelMessage.GetPlaceImage()} ,characterImage ：{novelMessage.GetCharacterImage()}");
+                //Debug.Log($"csv : storyNum ：{csvData[i][0]}, route ：{csvData[i][1]}, message ：{csvData[i][2]}, selectMessage ：{csvData[i][3]}, characterName ：{csvData[i][4]}, characterImagePath : {csvData[i][5]}, backgroundImagePath : {csvData[i][6]}");
+                NovelMessage novelMessage = new NovelMessage(storyNum: int.Parse(csvData[i][0]), route: csvData[i][1], message: csvData[i][2], selectMessage: csvData[i][3], characterName: csvData[i][4], characterImagePath: csvData[i][5], backgroundImagePath: csvData[i][6]);
+                //Debug.Log($"csv : storyNum ：{novelMessage.GetStoryNum()}, route ：{novelMessage.GetStoryNum()}, message ：{novelMessage.GetMessage()}, selectMessage ：{novelMessage.GetSelectMessage()}, characterName ：{novelMessage.GetCharacterName()}, characterImagePath : {novelMessage.GetCharacterImagePath()}, backgroundImagePath : {novelMessage.GetBackgroundImagePath()}");
                 novelData.Add(novelMessage);
             }
 

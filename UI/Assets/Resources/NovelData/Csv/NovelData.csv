@@ -1,5 +1,12 @@
-storyNum,characterName,message,placeImage,characterImage
-0,test1,testMessage1,testImage1,testImage1
-1,test2,testMessage2,testImage2,testImage2
-2,test3,testMessage3,testImage3,testImage3
-3,test4,testMessage4,testImage4,testImage1&testImage4
+storyNum,route,message,selectMessage,characterName,characterImage,backgroundImage
+0,,testMessage1,,test1,testImage1,testImage1
+1,,testMessage2,,test2,testImage2,testImage2
+2,,testMessage3,,test3,testImage3,testImage3
+3,,testMessage4,,test4,testImage4,testImage4
+4,,testMessage5,testSelectMessage1&testSelectMessage2,test1,testImage1&testImage2,testImage1
+5,1_1,testMessage6,,test1,testImage1,testImage2
+5,1_2,testMessage7,,test2,testImage2,testImage3
+6,,testMessage9,testSelectMessage1&testSelectMessage2&testSelectMessage3,test1,testImage3&testImage4,testImage4
+7,2_1,testMessage10,,test2,testImage2,testImage1
+7,2_2,testMessage11,,test3,testImage3,testImage2
+7,2_3,testMessage12,,test4,testImage4,testImage3
