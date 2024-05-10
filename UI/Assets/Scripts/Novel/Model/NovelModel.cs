@@ -17,6 +17,12 @@ public class NovelModel
         _novelSaveDataList = new NovelSaveDataList();
     }
 
+    public void SendTap()
+    {
+        //Debug.Log($"test : NovelModel : SendTap");
+        SendNextMessageText();
+    }
+
     private readonly ReactiveProperty<NovelMessage> _sendNextMessage = new ReactiveProperty<NovelMessage>();
     public IReadOnlyReactiveProperty<NovelMessage> SendNextMessage => _sendNextMessage;
 

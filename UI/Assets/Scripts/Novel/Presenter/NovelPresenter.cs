@@ -17,10 +17,10 @@ public class NovelPresenter
         _novelModel = novelModel;
     }
 
-    public void SendNextMessage()
+    public void SendTap()
     {
-        //Debug.Log($"test : NovelPresenter : SendNextMessageText");
-        _novelModel.SendNextMessageText();
+        //Debug.Log($"test : NovelPresenter : SendTap");
+        _novelModel.SendTap();
     }
 
     public IObservable<NovelMessage> sendMessageAsObservable =>
