@@ -23,7 +23,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
         nowStoryNum++;
@@ -44,7 +44,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
         return novelMessageData[nowStoryNum];
@@ -54,7 +54,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
         nowStoryNum = StoryNum;
@@ -66,7 +66,7 @@ public class NovelMessageData
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, characterName: "データがありません", message: "データがありません", backgroundImagePath: "", characterImagePath: "");
+            return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
         return novelMessageData[StoryNum];
@@ -77,6 +77,7 @@ public class NovelMessage
 {
     private int storyNum;
     private string route;
+    private string[] displayRouteConditions;
     private string message;
     private string[] selectMessages;
     private string characterName;
@@ -86,26 +87,25 @@ public class NovelMessage
     private Sprite backgroundImage;
     private List<Sprite> characterImageList = new List<Sprite>();
 
-    public NovelMessage(int storyNum, string characterName, string message, string backgroundImagePath, string characterImagePath)
-    {
-        this.storyNum = storyNum;
-        this.characterName = characterName;
-        this.message = message;
-        this.backgroundImagePath = backgroundImagePath;
-        this.characterImagePath = characterImagePath;
-    }
-
-    public NovelMessage(int storyNum, string route, string message, string selectMessage, string characterName, string backgroundImagePath, string characterImagePath)
+    public NovelMessage(int storyNum, string route, string displayRouteCondition, string message, string selectMessage, string characterName, string backgroundImagePath, string characterImagePath)
     {
         this.storyNum = storyNum;
         this.route = route;
+        this.displayRouteConditions = StringSplitUtils.GetStringArraySplitAnd(displayRouteCondition);
         this.message = message;
         this.selectMessages = StringSplitUtils.GetStringArraySplitAnd(selectMessage);
         this.characterName = characterName;
         this.backgroundImagePath = backgroundImagePath;
         this.characterImagePath = characterImagePath;
 
-        //Debug.Log($"NovelMessage : storyNum ：{this.storyNum}, route ：{this.route}, message ：{this.message}, selectMessage ：{selectMessage}, characterName ：{this.characterName}, characterImagePath : {this.characterImagePath}, backgroundImagePath : {this.backgroundImagePath}");
+        //Debug.Log($"NovelMessage : storyNum ：{this.storyNum}, route ：{this.route}, displayRouteCondition : {displayRouteCondition}, message ：{this.message}, selectMessage ：{selectMessage}, characterName ：{this.characterName}, characterImagePath : {this.characterImagePath}, backgroundImagePath : {this.backgroundImagePath}");
+        //Debug.Log($"NovelMessage : storyNum ：{GetStoryNum()}, route ：{GetStoryNum()}, message ：{GetMessage()}, selectMessage ：{GetSelectMessages()}, characterName ：{GetCharacterName()}, characterImagePath : {GetCharacterImagePath()}, backgroundImagePath : {GetBackgroundImagePath()}");
+
+        //foreach (string value in displayRouteConditions)
+        //{
+        //    Debug.Log($"displayRouteCondition : {value}");
+        //}
+
         //foreach (string value in selectMessages)
         //{
         //    Debug.Log($"selectMessage : {value}");
@@ -135,14 +135,19 @@ public class NovelMessage
         return route;
     }
 
+    public string[] GetSelectMessages()
+    {
+        return selectMessages;
+    }
+
     public string GetMessage()
     {
         return message;
     }
 
-    public string[] GetSelectMessages()
+    public string[] GetDisplayRouteConditions()
     {
-        return selectMessages;
+        return displayRouteConditions;
     }
 
     public string GetCharacterName()
