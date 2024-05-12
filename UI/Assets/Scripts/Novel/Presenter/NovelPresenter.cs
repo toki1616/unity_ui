@@ -38,6 +38,18 @@ public class NovelPresenter
             .Skip(1)    //登録時に走らないように
             .Share();
 
+    //SelectMessage
+    public IObservable<string[]> sendSelectMessagesAsObservable =>
+            _novelModel.SendSelectMessages
+            .Skip(1)
+            .Publish()
+            .RefCount();
+
+    public void OnClickSelectMessageButton(int buttonNum)
+    {
+        _novelModel.OnClickSelectMessageButton(buttonNum);
+    }
+
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
     {
         _novelModel.OnClickUnderButton(menu);

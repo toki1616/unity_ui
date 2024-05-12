@@ -32,6 +32,9 @@ public class NovelModel
     private readonly ReactiveProperty<List<Sprite>> _sendCharacterImage = new ReactiveProperty<List<Sprite>>();
     public IReadOnlyReactiveProperty<List<Sprite>> SendCharacterImage => _sendCharacterImage;
 
+    private readonly ReactiveProperty<string[]> _sendSelectMessages = new ReactiveProperty<string[]>();
+    public IReadOnlyReactiveProperty<string[]> SendSelectMessages => _sendSelectMessages;
+
     public void SendNextMessageText()
     {
         //Debug.Log($"test : NovelModel : SendNextMessageText");
@@ -51,6 +54,20 @@ public class NovelModel
 
         //characterImage
         _sendCharacterImage.SetValueAndForceNotify(novelMessage.GetCharacterImageList());
+
+        //SelectMessages
+        string[] selectMessages = novelMessage.GetSelectMessages();
+        if (selectMessages.Length <= 0 || selectMessages == null)
+        {
+            return;
+        }
+        _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
+    }
+
+    //SelectMessage
+    public void OnClickSelectMessageButton(int buttonNum)
+    {
+        Debug.Log($"NovelModel : OnClickSelectMessageButton : {buttonNum}");
     }
 
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)

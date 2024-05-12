@@ -140,7 +140,7 @@ public class NovelMessage
         return message;
     }
 
-    public string[] GetSelectMessage()
+    public string[] GetSelectMessages()
     {
         return selectMessages;
     }
