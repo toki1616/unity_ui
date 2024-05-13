@@ -16,6 +16,8 @@ namespace Const
         public const int saveCount = 10;
         public const int startSelectSaveNum = 0;
         public const int quickSaveNum = -1;
+
+        public const string novelRouteDataFileName = "novelRouteData.json";
     }
 
     public static class ResourceConst

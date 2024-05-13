@@ -10,11 +10,13 @@ public class NovelModel
 {
     private readonly NovelMessageData _novelMessageData;
     private readonly NovelSaveDataList _novelSaveDataList;
+    private readonly NovelRouteDataList _novelRouteDataList;
 
     public NovelModel()
     {
         _novelMessageData = new NovelMessageData();
         _novelSaveDataList = new NovelSaveDataList();
+        _novelRouteDataList = new NovelRouteDataList();
     }
 
     public void SendTap()
@@ -67,7 +69,11 @@ public class NovelModel
     //SelectMessage
     public void OnClickSelectMessageButton(int buttonNum)
     {
-        Debug.Log($"NovelModel : OnClickSelectMessageButton : {buttonNum}");
+        //Debug.Log($"NovelModel : OnClickSelectMessageButton : {buttonNum}");
+        NovelMessage novelMessage = _novelMessageData.GetNowMessage();
+
+        _novelRouteDataList.AddSelectRoute(route: novelMessage.GetRoute(), routeCondition: buttonNum);
+        //_novelRouteDataList.SaveNovelRouteData(0);
     }
 
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)

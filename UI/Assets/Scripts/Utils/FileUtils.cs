@@ -47,5 +47,26 @@ namespace Util{
             string json = ReadFile(path);
             return JsonUtility.FromJson<NovelSaveData>(json);//読み込んだJSONファイルをPlayerData型に
         }
+
+        public static void WriteNovelRouteData(string json, int saveNum)
+        {
+            string folderPath = Path.Combine(Application.persistentDataPath, $"{SaveConst.novelSaveDataFilePath}{saveNum}/");
+            //Debug.Log($"save : path : {path}");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string path = Path.Combine(folderPath, SaveConst.novelRouteDataFileName);
+            WriteAllText(path: path, value: json);
+        }
+
+        public static NovelUseRouteData ReadNovelRouteData(int saveNum)
+        {
+            string path = Path.Combine(Application.persistentDataPath, $"{SaveConst.novelSaveDataFilePath}{saveNum}/", SaveConst.novelRouteDataFileName);
+            string json = ReadFile(path);
+            return JsonUtility.FromJson<NovelUseRouteData>(json);//読み込んだJSONファイルをPlayerData型に
+        }
     }
 }

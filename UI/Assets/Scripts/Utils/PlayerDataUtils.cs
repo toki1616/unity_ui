@@ -10,6 +10,8 @@ namespace Util
 {
     public static class PlayerDataUtils
     {
+        //Novel
+        //SaveData
         public static void SaveNovelSaveData(NovelSaveData novelSaveData)
         {
             string jsonStr = JsonUtility.ToJson(novelSaveData);
@@ -38,6 +40,38 @@ namespace Util
             }
 
             return novelSaveDataList;
+        }
+
+        //RouteData
+        public static void SaveNovelRouteData(NovelRouteSaveData novelRouteDataList)
+        {
+            string jsonStr = JsonUtility.ToJson(novelRouteDataList);
+            Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
+            FileUtils.WriteNovelRouteData(jsonStr, novelRouteDataList.SaveNum);
+        }
+
+        public static NovelUseRouteData LoadNovelRouteData(int saveNum)
+        {
+            NovelUseRouteData novelSaveData = FileUtils.ReadNovelRouteData(saveNum);
+            return novelSaveData;
+        }
+
+        public static List<NovelRouteSaveData> LoadAllNovelRouteData()
+        {
+            List<NovelRouteSaveData> novelRouteSaveDataList = new List<NovelRouteSaveData>();
+
+            for (int i = SaveConst.quickSaveNum; i < SaveConst.saveCount; i++)
+            {
+                string path = Path.Combine(Application.persistentDataPath, $"{SaveConst.novelSaveDataFilePath}{i}/", SaveConst.novelSaveDataFileName);
+                if (FileUtils.ExistFile(path))
+                {
+                    NovelUseRouteData novelRouteDataList = LoadNovelRouteData(i);
+                    NovelRouteSaveData novelRouteSaveData = new NovelRouteSaveData(saveNum: i, novelUseRouteData: novelRouteDataList);
+                    novelRouteSaveDataList.Add(novelRouteSaveData);
+                }
+            }
+
+            return novelRouteSaveDataList;
         }
     }
 }
