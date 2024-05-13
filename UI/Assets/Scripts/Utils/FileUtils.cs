@@ -62,11 +62,12 @@ namespace Util{
             WriteAllText(path: path, value: json);
         }
 
-        public static NovelUseRouteData ReadNovelRouteData(int saveNum)
+        public static NovelRouteSaveData ReadNovelRouteData(int saveNum)
         {
             string path = Path.Combine(Application.persistentDataPath, $"{SaveConst.novelSaveDataFilePath}{saveNum}/", SaveConst.novelRouteDataFileName);
             string json = ReadFile(path);
-            return JsonUtility.FromJson<NovelUseRouteData>(json);//読み込んだJSONファイルをPlayerData型に
+            //Debug.Log($"ReadNovelRouteData : json : {json}");
+            return JsonUtility.FromJson<NovelRouteSaveData>(json);//読み込んだJSONファイルをPlayerData型に
         }
     }
 }

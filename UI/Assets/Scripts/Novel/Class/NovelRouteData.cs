@@ -20,8 +20,17 @@ public class NovelRouteDataList
 
     public NovelRouteDataList()
     {
-        novelRouteSaveDataList = new List<NovelRouteSaveData>();
-        //novelRouteSaveDataList = PlayerDataUtils.LoadAllNovelRouteData();
+        novelRouteSaveDataList = PlayerDataUtils.LoadAllNovelRouteData();
+        //foreach (NovelRouteSaveData novelRouteSaveData in novelRouteSaveDataList)
+        //{
+        //    Debug.Log($"NovelRouteDataList : saveNum ：{novelRouteSaveData.SaveNum}");
+
+        //    foreach (NovelRouteData novelRouteData in novelRouteSaveData.NovelUseRouteData.NovelRouteDataList)
+        //    {
+        //        Debug.Log($"route ：{novelRouteData.Route}, routeCondition ：{novelRouteData.RouteCondition}");
+        //    }
+        //}
+
         nowNovelUseRouteData = new NovelUseRouteData();
     }
 
