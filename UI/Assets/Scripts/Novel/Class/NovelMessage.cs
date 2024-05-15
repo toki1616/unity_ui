@@ -35,8 +35,7 @@ public class NovelMessageData
             return novelMessageData[0];
         }
 
-        var novelMessage = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == nowStoryNum)[0];
-        return novelMessage;
+        return GetNovelMessage(nowStoryNum);
     }
 
     public NovelMessage GetNowMessage()
@@ -47,7 +46,7 @@ public class NovelMessageData
             return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
-        return novelMessageData[nowStoryNum];
+        return GetNovelMessage(nowStoryNum);
     }
     public NovelMessage GetLoadMessage(int StoryNum)
     {
@@ -58,7 +57,7 @@ public class NovelMessageData
         }
 
         nowStoryNum = StoryNum;
-        return novelMessageData[StoryNum];
+        return GetNovelMessage(nowStoryNum);
     }
 
     public NovelMessage GetSaveDataNovelMessage(int StoryNum)
@@ -69,7 +68,13 @@ public class NovelMessageData
             return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
-        return novelMessageData[StoryNum];
+        return GetNovelMessage(StoryNum);
+    }
+
+    private NovelMessage GetNovelMessage(int storyNum)
+    {
+        var novelMessage = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum)[0];
+        return novelMessage;
     }
 }
 

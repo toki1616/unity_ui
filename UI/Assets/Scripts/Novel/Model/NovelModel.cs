@@ -171,12 +171,14 @@ public class NovelModel
         NovelMessage novelMessage = _novelMessageData.GetNowMessage();
         NovelSaveData novelSaveData = _novelSaveDataList.SaveAndGetSaveData(novelMessage: novelMessage, saveNum: saveNum);
         NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
+        _novelRouteDataList.SaveNovelRouteData(saveNum);
         _sendSaveDataButtonData.SetValueAndForceNotify(novelSaveDataButtonData);
     }
 
     private void Load(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
+        _novelRouteDataList.LoadNovelRouteData(saveNum);
         SendMessage(novelMessage);
     }
 }

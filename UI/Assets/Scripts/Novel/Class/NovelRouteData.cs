@@ -48,14 +48,17 @@ public class NovelRouteDataList
     public void LoadNovelRouteData(int saveNum)
     {
         var foundData = novelRouteSaveDataList.Find(novelRouteSaveData => novelRouteSaveData.SaveNum == saveNum);
-        if (foundData != null)
+        if (foundData == null)
         {
-            nowNovelUseRouteData = foundData.NovelUseRouteData;
+            return;
         }
+
+        nowNovelUseRouteData = foundData.NovelUseRouteData;
     }
 
     public void AddSelectRoute(string route, int routeCondition)
     {
+        //Debug.Log($"AddSelectRoute : route : {route}, routeCondition : {routeCondition}");
         NovelRouteData novelRouteData = new NovelRouteData(route: route, routeCondition: routeCondition);
         nowNovelUseRouteData.AddNovelUseRouteData(novelRouteData);
     }
