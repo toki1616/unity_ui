@@ -27,11 +27,12 @@ public class NovelSelectMessageUIView : MonoBehaviour
     void Start()
     {
         _novelPresenter.sendSelectMessagesAsObservable.Subscribe(_ => CreateSelectMessageButton(_)).AddTo(this);
+        _novelPresenter.onClickSelectButtonSubjectAsObservable.Subscribe(_ => OnClickSelectButton()).AddTo(this);
     }
 
     private void CreateSelectMessageButton(string[] selectMessages)
     {
-        Debug.Log($"NovelSelectMessageUIView : CreateSelectMessageButton");
+        //Debug.Log($"NovelSelectMessageUIView : CreateSelectMessageButton");
 
         buttonParentObject.SetActive(true);
         for (int i = 0; i < selectMessages.Length; i++)
@@ -40,6 +41,22 @@ public class NovelSelectMessageUIView : MonoBehaviour
             var createObj = spawnObject.GetComponent<NovelSelectMessageButtonView>();
             createObj.SetSelectMessage(selectMessages[i]);
             createObj.SetButtonNum(i);
+        }
+    }
+
+    private void OnClickSelectButton()
+    {
+        buttonParentObject.SetActive(false);
+        DeleteSelectButtons();
+    }
+
+    private void DeleteSelectButtons()
+    {
+        //自分の子供を全て調べる
+        foreach (Transform child in buttonParentObject.transform)
+        {
+            //自分の子供をDestroyする
+            Destroy(child.gameObject);
         }
     }
 }

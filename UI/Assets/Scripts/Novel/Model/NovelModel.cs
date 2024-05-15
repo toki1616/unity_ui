@@ -67,13 +67,16 @@ public class NovelModel
     }
 
     //SelectMessage
+    public Subject<Unit> onClickSelectButtonSubject = new Subject<Unit>();
+
     public void OnClickSelectMessageButton(int buttonNum)
     {
         //Debug.Log($"NovelModel : OnClickSelectMessageButton : {buttonNum}");
         NovelMessage novelMessage = _novelMessageData.GetNowMessage();
 
         _novelRouteDataList.AddSelectRoute(route: novelMessage.GetRoute(), routeCondition: buttonNum);
-        //_novelRouteDataList.SaveNovelRouteData(0);
+        onClickSelectButtonSubject.OnNext(Unit.Default);
+        SendNextMessageText();
     }
 
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)

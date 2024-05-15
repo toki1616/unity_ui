@@ -45,6 +45,11 @@ public class NovelPresenter
             .Publish()
             .RefCount();
 
+    public IObservable<Unit> onClickSelectButtonSubjectAsObservable =>
+        _novelModel.onClickSelectButtonSubject
+        .Publish()
+        .RefCount();
+
     public void OnClickSelectMessageButton(int buttonNum)
     {
         _novelModel.OnClickSelectMessageButton(buttonNum);
