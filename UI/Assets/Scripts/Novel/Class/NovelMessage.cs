@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 using Util;
 public class NovelMessageData
 {
+    private readonly NovelRouteDataList _novelRouteDataList;
+
     List<NovelMessage> novelMessageData;
     //読み込んでいないため-1から始める
     private int nowStoryNum = -1;
 
-    public NovelMessageData()
+    public NovelMessageData(NovelRouteDataList novelRouteDataList)
     {
         novelMessageData = CsvUtils.ReadNovelCsvFile();
+        _novelRouteDataList = novelRouteDataList;
 
         //foreach (NovelMessage message in novelMessageData)
         //{
@@ -73,7 +77,40 @@ public class NovelMessageData
 
     private NovelMessage GetNovelMessage(int storyNum)
     {
-        var novelMessage = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum)[0];
+        var novelMessage = new NovelMessage();
+
+        var novelMessages = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum);
+        novelMessages.Sort((a, b) => b.GetDisplayRouteConditions().Length.CompareTo(a.GetDisplayRouteConditions().Length));
+
+        List<string> nowRouteList = _novelRouteDataList.NowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
+        //foreach (string nowRoute in nowRouteList)
+        //{
+        //    Debug.Log($"nowRoute : {nowRoute}");
+        //}
+
+        foreach (NovelMessage novelMessageTest in novelMessages)
+        {
+            string[] routeConditions = novelMessageTest.GetDisplayRouteConditions();
+            if (routeConditions.Length > 0 || routeConditions != null)
+            {
+                //foreach (string routeCondition in routeConditions)
+                //{
+                //    Debug.Log($"routeCondition : {routeCondition}");
+                //}
+
+                bool containsAll = routeConditions.All(routeCondition => nowRouteList.Contains(routeCondition));
+                if (containsAll)
+                {
+                    novelMessage = novelMessageTest;
+                    break;
+                }
+            }
+            else
+            {
+                novelMessage = novelMessageTest;
+            }
+        }
+
         return novelMessage;
     }
 }
@@ -91,6 +128,11 @@ public class NovelMessage
 
     private Sprite backgroundImage;
     private List<Sprite> characterImageList = new List<Sprite>();
+
+    public NovelMessage()
+    {
+        
+    }
 
     public NovelMessage(int storyNum, string route, string displayRouteCondition, string message, string selectMessage, string characterName, string backgroundImagePath, string characterImagePath)
     {

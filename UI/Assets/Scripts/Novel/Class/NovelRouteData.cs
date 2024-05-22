@@ -54,6 +54,12 @@ public class NovelRouteDataList
         }
 
         nowNovelUseRouteData = foundData.NovelUseRouteData;
+
+        //List<string> nowRouteList = nowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
+        //foreach (string nowRoute in nowRouteList)
+        //{
+        //    Debug.Log($"Load : nowRoute : {nowRoute}");
+        //}
     }
 
     public void AddSelectRoute(string route, int routeCondition)
@@ -124,6 +130,21 @@ public class NovelUseRouteData
             novelRouteDataList.Add(novelRouteData);
         }
     }
+
+    public List<string> GetRouteConditionsFromNovelRouteData()
+    {
+        if (novelRouteDataList.Count == 0 || novelRouteDataList == null)
+        {
+            return new List<string>();
+        }
+
+        List<string> returnList = new List<string>();
+        foreach (NovelRouteData novelRouteData in novelRouteDataList)
+        {
+            returnList.Add($"{novelRouteData.Route}={novelRouteData.RouteCondition}");
+        }
+        return returnList;
+    }
 }
 
 [Serializable]
@@ -157,5 +178,10 @@ public class NovelRouteData
     {
         this.route = route;
         this.routeCondition = routeCondition;
+    }
+
+    public string GetDisplayRouteCondition()
+    {
+        return $"{route}={routeCondition}";
     }
 }

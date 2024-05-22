@@ -14,9 +14,9 @@ public class NovelModel
 
     public NovelModel()
     {
-        _novelMessageData = new NovelMessageData();
-        _novelSaveDataList = new NovelSaveDataList();
         _novelRouteDataList = new NovelRouteDataList();
+        _novelMessageData = new NovelMessageData(_novelRouteDataList);
+        _novelSaveDataList = new NovelSaveDataList();
     }
 
     public void SendTap()

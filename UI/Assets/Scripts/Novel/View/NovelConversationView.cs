@@ -54,7 +54,7 @@ public class NovelConversationView : MonoBehaviour
                 messageText.text += $"{message[_]}";
             },
             () => {
-                Debug.Log("message : complate");
+                //Debug.Log("message : complate");
             });
     }
 }
