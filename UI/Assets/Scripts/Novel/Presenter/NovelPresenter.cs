@@ -17,10 +17,10 @@ public class NovelPresenter
         _novelModel = novelModel;
     }
 
-    public void SendNextMessage()
+    public void SendTap()
     {
-        //Debug.Log($"test : NovelPresenter : SendNextMessageText");
-        _novelModel.SendNextMessageText();
+        //Debug.Log($"test : NovelPresenter : SendTap");
+        _novelModel.SendTap();
     }
 
     public IObservable<NovelMessage> sendMessageAsObservable =>
@@ -37,6 +37,23 @@ public class NovelPresenter
             _novelModel.SendCharacterImage
             .Skip(1)    //登録時に走らないように
             .Share();
+
+    //SelectMessage
+    public IObservable<string[]> sendSelectMessagesAsObservable =>
+            _novelModel.SendSelectMessages
+            .Skip(1)
+            .Publish()
+            .RefCount();
+
+    public IObservable<Unit> onClickSelectButtonSubjectAsObservable =>
+        _novelModel.onClickSelectButtonSubject
+        .Publish()
+        .RefCount();
+
+    public void OnClickSelectMessageButton(int buttonNum)
+    {
+        _novelModel.OnClickSelectMessageButton(buttonNum);
+    }
 
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
     {

@@ -122,24 +122,11 @@ public class NovelSaveDataButtonData
 {
     private NovelMessage novelMessage;
     private NovelSaveData novelSaveData;
-    private Sprite backgroundImage;
-    private List<Sprite> characterImageList = new List<Sprite>();
 
     public NovelSaveDataButtonData(NovelMessage novelMessage, NovelSaveData novelSaveData)
     {
         this.novelMessage = novelMessage;
         this.novelSaveData = novelSaveData;
-
-        backgroundImage = ResourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
-
-        //characterImage
-        string[] characterImagePaths = StringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
-        foreach (string path in characterImagePaths)
-        {
-            //Debug.Log($"path : {path}");
-            Sprite characterImage = ResourcesUtils.GetNovelCharacterImage(path: path);
-            characterImageList.Add(characterImage);
-        }
     }
 
     public NovelSaveDataButtonData(NovelSaveData novelSaveData)
@@ -159,11 +146,11 @@ public class NovelSaveDataButtonData
 
     public Sprite GetBackgroundImage()
     {
-        return backgroundImage;
+        return novelMessage.GetBackgroundImage();
     }
 
     public List<Sprite> GetCharacterImageList()
     {
-        return characterImageList;
+        return novelMessage.GetCharacterImageList();
     }
 }

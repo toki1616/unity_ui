@@ -32,6 +32,6 @@ public class NovelTapView : MonoBehaviour
     private void OnPointerDown(PointerEventData pointerEventData)
     {
         //Debug.Log(pointerEventData.position);
-        _novelPresenter.SendNextMessage();
+        _novelPresenter.SendTap();
     }
 }

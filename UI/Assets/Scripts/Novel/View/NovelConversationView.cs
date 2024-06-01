@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using Zenject;
+using System;
 
 public class NovelConversationView : MonoBehaviour
 {
@@ -32,8 +33,8 @@ public class NovelConversationView : MonoBehaviour
     private void ReceivedMessage(NovelMessage novelMessage)
     {
         //Debug.Log($"NovelConversationView : ReceivedMessage");
-        nameText.text = $"{novelMessage.GetCharacterName()}";
-        messageText.text = $"{novelMessage.GetMessage()}";
+        UpdateName(novelMessage.GetCharacterName());
+        UpdateMessage(novelMessage.GetMessage());
     }
 
     private void UpdateName(string name)
@@ -43,6 +44,17 @@ public class NovelConversationView : MonoBehaviour
 
     private void UpdateMessage(string message)
     {
-        messageText.text = $"{message}";
+        messageText.text = "";
+        //messageText.text = $"{message}";
+        Observable.Range(0, message.Length)
+            .Select(index => Observable.Timer(TimeSpan.FromSeconds(0.1)).Select(_ => index))
+            .Concat()
+            .Subscribe(_ =>
+            {
+                messageText.text += $"{message[_]}";
+            },
+            () => {
+                //Debug.Log("message : complate");
+            });
     }
 }

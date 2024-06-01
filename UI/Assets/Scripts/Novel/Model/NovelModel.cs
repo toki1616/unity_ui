@@ -10,11 +10,19 @@ public class NovelModel
 {
     private readonly NovelMessageData _novelMessageData;
     private readonly NovelSaveDataList _novelSaveDataList;
+    private readonly NovelRouteDataList _novelRouteDataList;
 
     public NovelModel()
     {
-        _novelMessageData = new NovelMessageData();
+        _novelRouteDataList = new NovelRouteDataList();
+        _novelMessageData = new NovelMessageData(_novelRouteDataList);
         _novelSaveDataList = new NovelSaveDataList();
+    }
+
+    public void SendTap()
+    {
+        //Debug.Log($"test : NovelModel : SendTap");
+        SendNextMessageText();
     }
 
     private readonly ReactiveProperty<NovelMessage> _sendNextMessage = new ReactiveProperty<NovelMessage>();
@@ -26,6 +34,9 @@ public class NovelModel
     private readonly ReactiveProperty<List<Sprite>> _sendCharacterImage = new ReactiveProperty<List<Sprite>>();
     public IReadOnlyReactiveProperty<List<Sprite>> SendCharacterImage => _sendCharacterImage;
 
+    private readonly ReactiveProperty<string[]> _sendSelectMessages = new ReactiveProperty<string[]>();
+    public IReadOnlyReactiveProperty<string[]> SendSelectMessages => _sendSelectMessages;
+
     public void SendNextMessageText()
     {
         //Debug.Log($"test : NovelModel : SendNextMessageText");
@@ -35,27 +46,37 @@ public class NovelModel
 
     private void SendMessage(NovelMessage novelMessage)
     {
-        //Debug.Log($"storyNum ：{novelMessage.GetStoryNum()} ,characterName ：{novelMessage.GetCharacterName()} ,novelMessage ：{novelMessage.GetMessage()} ,placeImage ：{novelMessage.GetPlaceImage()} ,characterImage ：{novelMessage.GetCharacterImage()}");
+        //Debug.Log($"NovelMessage : storyNum ：{novelMessage.GetStoryNum()}, route ：{novelMessage.GetRoute()}, message ：{novelMessage.GetMessage()}, selectMessage ：{novelMessage.GetSelectMessage()}, characterName ：{novelMessage.GetCharacterName()}, characterImagePath : {novelMessage.GetCharacterImageList()}, backgroundImagePath : {novelMessage.GetBackgroundImage().name}");
 
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(novelMessage);
 
         //BackgroundImage
-        Sprite bgImage = ResourcesUtils.GetNovelBackgroundImage(path: novelMessage.GetPlaceImage());
-        _sendBackGroundImage.SetValueAndForceNotify(bgImage);
+        _sendBackGroundImage.SetValueAndForceNotify(novelMessage.GetBackgroundImage());
 
         //characterImage
-        string[] characterImagePaths = StringSplitUtils.GetSplitNovelCharacterImagePaths(novelMessage.GetCharacterImage());
-        List<Sprite> characterImageList = new List<Sprite>();
+        _sendCharacterImage.SetValueAndForceNotify(novelMessage.GetCharacterImageList());
 
-        foreach (string path in characterImagePaths)
+        //SelectMessages
+        string[] selectMessages = novelMessage.GetSelectMessages();
+        if (selectMessages.Length <= 0 || selectMessages == null)
         {
-            //Debug.Log($"path : {path}");
-            Sprite characterImage = ResourcesUtils.GetNovelCharacterImage(path: path);
-            characterImageList.Add(characterImage);
+            return;
         }
+        _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
+    }
 
-        _sendCharacterImage.SetValueAndForceNotify(characterImageList);
+    //SelectMessage
+    public Subject<Unit> onClickSelectButtonSubject = new Subject<Unit>();
+
+    public void OnClickSelectMessageButton(int buttonNum)
+    {
+        //Debug.Log($"NovelModel : OnClickSelectMessageButton : {buttonNum}");
+        NovelMessage novelMessage = _novelMessageData.GetNowMessage();
+
+        _novelRouteDataList.AddSelectRoute(route: novelMessage.GetRoute(), routeCondition: buttonNum);
+        onClickSelectButtonSubject.OnNext(Unit.Default);
+        SendNextMessageText();
     }
 
     public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
@@ -153,12 +174,14 @@ public class NovelModel
         NovelMessage novelMessage = _novelMessageData.GetNowMessage();
         NovelSaveData novelSaveData = _novelSaveDataList.SaveAndGetSaveData(novelMessage: novelMessage, saveNum: saveNum);
         NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
+        _novelRouteDataList.SaveNovelRouteData(saveNum);
         _sendSaveDataButtonData.SetValueAndForceNotify(novelSaveDataButtonData);
     }
 
     private void Load(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
+        _novelRouteDataList.LoadNovelRouteData(saveNum);
         SendMessage(novelMessage);
     }
 }
