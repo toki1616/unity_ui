@@ -11,3 +11,4 @@ storyNum,route,displayRouteConditions,message,selectMessage,characterName,charac
 7,,2_1=1,testMessage11,,test3,testImage3,testImage2
 7,,2_1=2,testMessage12,,test4,testImage4,testImage3
 8,,1_1=0&2_1=0,testMessage13,,test1,testImage1&testImage2&testImage3&testImage4,testImage4
+9,,,testMessage14,,test2,testImage1&testImage2&testImage3&testImage4,testImage4
