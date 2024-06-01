@@ -31,6 +31,7 @@ public class NovelMessageData
         }
 
         nowStoryNum++;
+        //Debug.Log($"nowStoryNum : {nowStoryNum}");
 
         if (novelMessageData.Count <= nowStoryNum)
         {
@@ -39,7 +40,14 @@ public class NovelMessageData
             return novelMessageData[0];
         }
 
-        return GetNovelMessage(nowStoryNum);
+        var novelMessage = GetNovelMessage(nowStoryNum);
+        if (novelMessage == null)
+        {
+            //Debug.Log("null message");
+            return GetNextMessage();
+        }
+
+        return novelMessage;
     }
 
     public NovelMessage GetNowMessage()
@@ -77,8 +85,6 @@ public class NovelMessageData
 
     private NovelMessage GetNovelMessage(int storyNum)
     {
-        var novelMessage = new NovelMessage();
-
         var novelMessages = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum);
         novelMessages.Sort((a, b) => b.GetDisplayRouteConditions().Length.CompareTo(a.GetDisplayRouteConditions().Length));
 
@@ -88,28 +94,7 @@ public class NovelMessageData
         //    Debug.Log($"nowRoute : {nowRoute}");
         //}
 
-        foreach (NovelMessage novelMessageTest in novelMessages)
-        {
-            string[] routeConditions = novelMessageTest.GetDisplayRouteConditions();
-            if (routeConditions.Length > 0 || routeConditions != null)
-            {
-                //foreach (string routeCondition in routeConditions)
-                //{
-                //    Debug.Log($"routeCondition : {routeCondition}");
-                //}
-
-                bool containsAll = routeConditions.All(routeCondition => nowRouteList.Contains(routeCondition));
-                if (containsAll)
-                {
-                    novelMessage = novelMessageTest;
-                    break;
-                }
-            }
-            else
-            {
-                novelMessage = novelMessageTest;
-            }
-        }
+        var novelMessage = novelMessages.FirstOrDefault(novelMessageTest => novelMessageTest.GetDisplayRouteConditions().All(routeCondition => nowRouteList.Contains(routeCondition)));
 
         return novelMessage;
     }
