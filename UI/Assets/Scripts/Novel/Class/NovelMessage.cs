@@ -80,6 +80,13 @@ public class NovelMessageData
             return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
         }
 
+        var novelMessage = GetNovelMessage(storyNum);
+        if (novelMessage == null)
+        {
+            //Debug.Log("null message");
+            return new NovelMessage();
+        }
+
         return GetNovelMessage(storyNum);
     }
 
