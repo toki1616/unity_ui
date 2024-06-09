@@ -89,4 +89,11 @@ public class NovelPresenter
     {
         _novelModel.OnClickSaveDataButton(saveNum);
     }
+
+    //Hidden
+    public IObservable<bool> isUIHidden =>
+            _novelModel.IsUIActive
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
 }

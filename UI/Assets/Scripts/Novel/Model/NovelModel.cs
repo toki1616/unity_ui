@@ -22,6 +22,12 @@ public class NovelModel
     public void SendTap()
     {
         //Debug.Log($"test : NovelModel : SendTap");
+        if (!_isUIActive.Value)
+        {
+            Hidden(true);
+            return;
+        }
+
         SendNextMessageText();
     }
 
@@ -106,6 +112,7 @@ public class NovelModel
             case NovelUnderButtonEnum.Menu.Option:
                 break;
             case NovelUnderButtonEnum.Menu.Hidden:
+                Hidden(false);
                 break;
             default:
                 break;
@@ -183,5 +190,13 @@ public class NovelModel
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
         _novelRouteDataList.LoadNovelRouteData(saveNum);
         SendMessage(novelMessage);
+    }
+
+    //Hidden
+    private readonly ReactiveProperty<bool> _isUIActive = new ReactiveProperty<bool>(true);
+    public IReadOnlyReactiveProperty<bool> IsUIActive => _isUIActive;
+    public void Hidden(bool isActive)
+    {
+        _isUIActive.SetValueAndForceNotify(isActive);
     }
 }
