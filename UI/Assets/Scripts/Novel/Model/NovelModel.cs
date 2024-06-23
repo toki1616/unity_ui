@@ -31,6 +31,9 @@ public class NovelModel
         SendNextMessageText();
     }
 
+    /// <summary>
+    /// Message
+    /// </summary>
     private readonly ReactiveProperty<NovelMessage> _sendNextMessage = new ReactiveProperty<NovelMessage>();
     public IReadOnlyReactiveProperty<NovelMessage> SendNextMessage => _sendNextMessage;
 
@@ -72,6 +75,9 @@ public class NovelModel
         _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
     }
 
+    /// <summary>
+    /// UI
+    /// </summary>
     //SelectMessage
     public Subject<Unit> onClickSelectButtonSubject = new Subject<Unit>();
 
@@ -119,6 +125,9 @@ public class NovelModel
         }
     }
 
+    /// <summary>
+    /// Save
+    /// </summary>
     //SaveData
     private readonly ReactiveProperty<bool> _activeSaveDataUI = new ReactiveProperty<bool>();
     public IReadOnlyReactiveProperty<bool> ActiveSaveDataUI => _activeSaveDataUI;
@@ -185,6 +194,10 @@ public class NovelModel
         _sendSaveDataButtonData.SetValueAndForceNotify(novelSaveDataButtonData);
     }
 
+    /// <summary>
+    /// Load
+    /// </summary>
+    /// <param name="saveNum"></param>
     private void Load(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
@@ -192,7 +205,29 @@ public class NovelModel
         SendMessage(novelMessage);
     }
 
-    //Hidden
+    /// <summary>
+    /// Auto
+    /// </summary>
+
+
+    /// <summary>
+    /// Skip
+    /// </summary>
+
+
+    /// <summary>
+    /// Log
+    /// </summary>
+
+
+    /// <summary>
+    /// Option
+    /// </summary>
+    
+
+    /// <summary>
+    /// Hidden
+    /// </summary>
     private readonly ReactiveProperty<bool> _isUIActive = new ReactiveProperty<bool>(true);
     public IReadOnlyReactiveProperty<bool> IsUIActive => _isUIActive;
     public void Hidden(bool isActive)
