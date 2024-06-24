@@ -23,10 +23,21 @@ public class NovelPresenter
         _novelModel.SendTap();
     }
 
+    //Message
     public IObservable<NovelMessage> sendMessageAsObservable =>
             _novelModel.SendNextMessage
             .Skip(1)    //登録時に走らないように
             .Share();
+
+    public void OnComplatedMessageView()
+    {
+        _novelModel.OnComplatedMessageView();
+    }
+
+    public IObservable<Unit> skipUpdateMessageAsObservable =>
+            _novelModel.skipUpdateMessage
+            .Publish()
+            .RefCount();
 
     public IObservable<Sprite> sendBackgroundImage =>
             _novelModel.SendBackGroundImage

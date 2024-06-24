@@ -28,6 +28,13 @@ public class NovelModel
             return;
         }
 
+        if (!isComplatedMessage)
+        {
+            SendSkipUpdateMessage();
+            return;
+        }
+
+        isComplatedMessage = false;
         SendNextMessageText();
     }
 
@@ -73,6 +80,18 @@ public class NovelModel
             return;
         }
         _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
+    }
+
+    private bool isComplatedMessage = true;
+    public void OnComplatedMessageView()
+    {
+        isComplatedMessage = true;
+    }
+
+    public Subject<Unit> skipUpdateMessage = new Subject<Unit>();
+    private void SendSkipUpdateMessage()
+    {
+        skipUpdateMessage.OnNext(Unit.Default);
     }
 
     /// <summary>
