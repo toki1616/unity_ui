@@ -28,21 +28,12 @@ public class NovelModel
             return;
         }
 
-        if (!isComplatedMessage)
+        if (isAuto)
         {
-            SendSkipUpdateMessage();
             return;
         }
 
-        isComplatedMessage = false;
-
-        if (_novelMessageData.IsSendSelectMessage())
-        {
-            SendNowSelectMessage();
-            return;
-        }
-
-        SendNextMessageText();
+        NextMessageMove();
     }
 
     /// <summary>
@@ -98,10 +89,39 @@ public class NovelModel
         _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
     }
 
+    private void NextMessageMove()
+    {
+        //if (!_isUIActive.Value)
+        //{
+        //    return;
+        //}
+
+        if (!isComplatedMessage)
+        {
+            SendSkipUpdateMessage();
+            return;
+        }
+
+        isComplatedMessage = false;
+
+        if (_novelMessageData.IsSendSelectMessage())
+        {
+            SendNowSelectMessage();
+            return;
+        }
+
+        SendNextMessageText();
+    }
+
     private bool isComplatedMessage = true;
     public void OnComplatedMessageView()
     {
         isComplatedMessage = true;
+
+        if (isAuto)
+        {
+            NextMessageMove();
+        }
     }
 
     public Subject<Unit> skipUpdateMessage = new Subject<Unit>();
@@ -145,6 +165,7 @@ public class NovelModel
                 Load(SaveConst.quickSaveNum);
                 break;
             case NovelUnderButtonEnum.Menu.Auto:
+                Auto();
                 break;
             case NovelUnderButtonEnum.Menu.Skip:
                 break;
@@ -243,7 +264,12 @@ public class NovelModel
     /// <summary>
     /// Auto
     /// </summary>
-
+    private bool isAuto = false;
+    private void Auto()
+    {
+        isAuto = !isAuto;
+        NextMessageMove();
+    }
 
     /// <summary>
     /// Skip
@@ -258,7 +284,7 @@ public class NovelModel
     /// <summary>
     /// Option
     /// </summary>
-    
+
 
     /// <summary>
     /// Hidden

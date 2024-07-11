@@ -101,6 +101,26 @@ public class NovelPresenter
         _novelModel.OnClickSaveDataButton(saveNum);
     }
 
+    /// <summary>
+    /// Auto
+    /// </summary>
+    
+
+    /// <summary>
+    /// Skip
+    /// </summary>
+
+
+    /// <summary>
+    /// Log
+    /// </summary>
+
+
+    /// <summary>
+    /// Option
+    /// </summary>
+
+
     //Hidden
     public IObservable<bool> isUIHidden =>
             _novelModel.IsUIActive
