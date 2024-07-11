@@ -35,6 +35,13 @@ public class NovelModel
         }
 
         isComplatedMessage = false;
+
+        if (_novelMessageData.IsSendSelectMessage())
+        {
+            SendNowSelectMessage();
+            return;
+        }
+
         SendNextMessageText();
     }
 
@@ -72,8 +79,17 @@ public class NovelModel
 
         //characterImage
         _sendCharacterImage.SetValueAndForceNotify(novelMessage.GetCharacterImageList());
+    }
 
-        //SelectMessages
+    // 選択肢
+    private void SendNowSelectMessage()
+    {
+        NovelMessage novelMessage = _novelMessageData.GetNowMessage();
+        SendSelectMessage(novelMessage);
+    }
+
+    private void SendSelectMessage(NovelMessage novelMessage)
+    {
         string[] selectMessages = novelMessage.GetSelectMessages();
         if (selectMessages.Length <= 0 || selectMessages == null)
         {
