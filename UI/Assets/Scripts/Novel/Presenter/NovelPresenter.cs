@@ -23,10 +23,21 @@ public class NovelPresenter
         _novelModel.SendTap();
     }
 
+    //Message
     public IObservable<NovelMessage> sendMessageAsObservable =>
             _novelModel.SendNextMessage
             .Skip(1)    //登録時に走らないように
             .Share();
+
+    public void OnComplatedMessageView()
+    {
+        _novelModel.OnComplatedMessageView();
+    }
+
+    public IObservable<Unit> skipUpdateMessageAsObservable =>
+            _novelModel.skipUpdateMessage
+            .Publish()
+            .RefCount();
 
     public IObservable<Sprite> sendBackgroundImage =>
             _novelModel.SendBackGroundImage
@@ -55,7 +66,7 @@ public class NovelPresenter
         _novelModel.OnClickSelectMessageButton(buttonNum);
     }
 
-    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
+    public void OnClickUnderButton(NovelButtonEnum.Menu menu)
     {
         _novelModel.OnClickUnderButton(menu);
     }
@@ -80,15 +91,34 @@ public class NovelPresenter
         return _novelModel.GetSaveDataButtonData(saveNum);
     }
 
-    public void OnClickCloseSaveData()
-    {
-        _novelModel.OnClickCloseSaveData();
-    }
-
     public void OnClickSaveDataButton(int saveNum)
     {
         _novelModel.OnClickSaveDataButton(saveNum);
     }
+
+    /// <summary>
+    /// Auto
+    /// </summary>
+
+
+    /// <summary>
+    /// Skip
+    /// </summary>
+
+
+    /// <summary>
+    /// Log
+    /// </summary>
+    public IObservable<bool> activeLogUI =>
+            _novelModel.ActiveLogUI
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
+
+    /// <summary>
+    /// Option
+    /// </summary>
+
 
     //Hidden
     public IObservable<bool> isUIHidden =>
@@ -96,4 +126,10 @@ public class NovelPresenter
             //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
             .Publish()
             .RefCount();
+
+    //CloseUI
+    public void OnClickClose(NovelButtonEnum.CloseUI closeUI)
+    {
+        _novelModel.OnClickClose(closeUI);
+    }
 }

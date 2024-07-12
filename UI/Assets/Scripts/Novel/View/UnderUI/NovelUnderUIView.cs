@@ -17,8 +17,8 @@ public class NovelUnderUIView : MonoBehaviour
 
     private void CreateUnderButton()
     {
-        Array array = Enum.GetValues(typeof(NovelUnderButtonEnum.Menu));
-        foreach (var menuValue in array.Cast<NovelUnderButtonEnum.Menu>())
+        Array array = Enum.GetValues(typeof(NovelButtonEnum.Menu));
+        foreach (var menuValue in array.Cast<NovelButtonEnum.Menu>())
         {
             GameObject spawnObject = Instantiate(_spawnPrefab, this.transform);
             spawnObject.GetComponent<NovelUnderButtonView>().SetMenuEnum(menuValue);

@@ -18,25 +18,33 @@ public class NovelUIView : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject optionUI;
+    private GameObject saveDataUI;
 
     [SerializeField]
-    private GameObject saveDataUI;
+    private GameObject logUI;
+
+    [SerializeField]
+    private GameObject optionUI;
 
     // Start is called before the first frame update
     void Start()
     {
         _novelPresenter.activeSaveDataUI.Subscribe(_ => SaveDataUIChangeActive(_)).AddTo(this);
-    }
-
-
-    private void OptionUIChangeActive(bool isActive)
-    {
-        optionUI.SetActive(isActive);
+        _novelPresenter.activeLogUI.Subscribe(_ => LogUIChangeActive(_)).AddTo(this);
     }
 
     private void SaveDataUIChangeActive(bool isActive)
     {
         saveDataUI.SetActive(isActive);
+    }
+
+    private void LogUIChangeActive(bool isActive)
+    {
+        logUI.SetActive(isActive);
+    }
+
+    private void OptionUIChangeActive(bool isActive)
+    {
+        optionUI.SetActive(isActive);
     }
 }

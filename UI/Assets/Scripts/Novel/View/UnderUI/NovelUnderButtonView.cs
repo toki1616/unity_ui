@@ -21,7 +21,7 @@ public class NovelUnderButtonView : MonoBehaviour
     [SerializeField]
     private Text _nameText;
 
-    private NovelUnderButtonEnum.Menu menu = NovelUnderButtonEnum.Menu.Option;
+    private NovelButtonEnum.Menu menu = NovelButtonEnum.Menu.Option;
 
     void Awake()
     {
@@ -36,7 +36,7 @@ public class NovelUnderButtonView : MonoBehaviour
 
     }
 
-    public void SetMenuEnum(NovelUnderButtonEnum.Menu menuEnum)
+    public void SetMenuEnum(NovelButtonEnum.Menu menuEnum)
     {
         menu = menuEnum;
 
@@ -45,7 +45,7 @@ public class NovelUnderButtonView : MonoBehaviour
 
     private void ChangeButtonText()
     {
-        var name = new NovelUnderButtonEnum().GetMenuListName(menu);
+        var name = new NovelButtonEnum().GetMenuListName(menu);
         _nameText.text = name;
     }
 

@@ -93,6 +93,12 @@ public class NovelMessageData
     private NovelMessage GetNovelMessage(int storyNum)
     {
         var novelMessages = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum);
+
+        if (novelMessages == null)
+        {
+            return null;
+        }
+
         novelMessages.Sort((a, b) => b.GetDisplayRouteConditions().Length.CompareTo(a.GetDisplayRouteConditions().Length));
 
         List<string> nowRouteList = _novelRouteDataList.NowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
@@ -104,6 +110,23 @@ public class NovelMessageData
         var novelMessage = novelMessages.FirstOrDefault(novelMessageTest => novelMessageTest.GetDisplayRouteConditions().All(routeCondition => nowRouteList.Contains(routeCondition)));
 
         return novelMessage;
+    }
+
+    public bool IsSendSelectMessage()
+    {
+        NovelMessage novelMessage = GetNowMessage();
+        if (novelMessage == null)
+        {
+            return false;
+        }
+
+        string[] selectMessages = novelMessage.GetSelectMessages();
+        if (selectMessages.Length <= 0 || selectMessages == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
 

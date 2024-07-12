@@ -11,7 +11,7 @@ public class NovelDataEnum
     }
 }
 
-public class NovelUnderButtonEnum
+public class NovelButtonEnum
 {
     public enum Menu
     {
@@ -26,7 +26,7 @@ public class NovelUnderButtonEnum
         Hidden,
     }
 
-    public string GetMenuListName(NovelUnderButtonEnum.Menu menuEnum)
+    public string GetMenuListName(Menu menuEnum)
     {
         switch (menuEnum)
         {
@@ -51,5 +51,12 @@ public class NovelUnderButtonEnum
             default:
                 return "";
         }
+    }
+
+    public enum CloseUI
+    {
+        Save,
+        Log,
+        Option,
     }
 }

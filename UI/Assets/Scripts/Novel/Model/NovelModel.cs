@@ -28,9 +28,17 @@ public class NovelModel
             return;
         }
 
-        SendNextMessageText();
+        if (isAuto)
+        {
+            return;
+        }
+
+        NextMessageMove();
     }
 
+    /// <summary>
+    /// Message
+    /// </summary>
     private readonly ReactiveProperty<NovelMessage> _sendNextMessage = new ReactiveProperty<NovelMessage>();
     public IReadOnlyReactiveProperty<NovelMessage> SendNextMessage => _sendNextMessage;
 
@@ -62,8 +70,17 @@ public class NovelModel
 
         //characterImage
         _sendCharacterImage.SetValueAndForceNotify(novelMessage.GetCharacterImageList());
+    }
 
-        //SelectMessages
+    // 選択肢
+    private void SendNowSelectMessage()
+    {
+        NovelMessage novelMessage = _novelMessageData.GetNowMessage();
+        SendSelectMessage(novelMessage);
+    }
+
+    private void SendSelectMessage(NovelMessage novelMessage)
+    {
         string[] selectMessages = novelMessage.GetSelectMessages();
         if (selectMessages.Length <= 0 || selectMessages == null)
         {
@@ -72,6 +89,50 @@ public class NovelModel
         _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
     }
 
+    private void NextMessageMove()
+    {
+        //if (!_isUIActive.Value)
+        //{
+        //    return;
+        //}
+
+        if (!isComplatedMessage)
+        {
+            SendSkipUpdateMessage();
+            return;
+        }
+
+        isComplatedMessage = false;
+
+        if (_novelMessageData.IsSendSelectMessage())
+        {
+            SendNowSelectMessage();
+            return;
+        }
+
+        SendNextMessageText();
+    }
+
+    private bool isComplatedMessage = true;
+    public void OnComplatedMessageView()
+    {
+        isComplatedMessage = true;
+
+        if (isAuto)
+        {
+            NextMessageMove();
+        }
+    }
+
+    public Subject<Unit> skipUpdateMessage = new Subject<Unit>();
+    private void SendSkipUpdateMessage()
+    {
+        skipUpdateMessage.OnNext(Unit.Default);
+    }
+
+    /// <summary>
+    /// UI
+    /// </summary>
     //SelectMessage
     public Subject<Unit> onClickSelectButtonSubject = new Subject<Unit>();
 
@@ -85,33 +146,35 @@ public class NovelModel
         SendNextMessageText();
     }
 
-    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
+    public void OnClickUnderButton(NovelButtonEnum.Menu menu)
     {
         //Debug.Log($"NovelModel : click : {menu}");
 
         switch (menu)
         {
-            case NovelUnderButtonEnum.Menu.Save:
+            case NovelButtonEnum.Menu.Save:
                 OpenSaveDataUI(NovelDataEnum.SaveDataMode.Save);
                 break;
-            case NovelUnderButtonEnum.Menu.Load:
+            case NovelButtonEnum.Menu.Load:
                 OpenSaveDataUI(NovelDataEnum.SaveDataMode.Load);
                 break;
-            case NovelUnderButtonEnum.Menu.QuickSave:
+            case NovelButtonEnum.Menu.QuickSave:
                 Save(SaveConst.quickSaveNum);
                 break;
-            case NovelUnderButtonEnum.Menu.QuickLoad:
+            case NovelButtonEnum.Menu.QuickLoad:
                 Load(SaveConst.quickSaveNum);
                 break;
-            case NovelUnderButtonEnum.Menu.Auto:
+            case NovelButtonEnum.Menu.Auto:
+                Auto();
                 break;
-            case NovelUnderButtonEnum.Menu.Skip:
+            case NovelButtonEnum.Menu.Skip:
                 break;
-            case NovelUnderButtonEnum.Menu.Log:
+            case NovelButtonEnum.Menu.Log:
+                Log();
                 break;
-            case NovelUnderButtonEnum.Menu.Option:
+            case NovelButtonEnum.Menu.Option:
                 break;
-            case NovelUnderButtonEnum.Menu.Hidden:
+            case NovelButtonEnum.Menu.Hidden:
                 Hidden(false);
                 break;
             default:
@@ -119,6 +182,9 @@ public class NovelModel
         }
     }
 
+    /// <summary>
+    /// Save
+    /// </summary>
     //SaveData
     private readonly ReactiveProperty<bool> _activeSaveDataUI = new ReactiveProperty<bool>();
     public IReadOnlyReactiveProperty<bool> ActiveSaveDataUI => _activeSaveDataUI;
@@ -134,11 +200,6 @@ public class NovelModel
     private void CloseSaveDataUI()
     {
         _activeSaveDataUI.SetValueAndForceNotify(false);
-    }
-
-    public void OnClickCloseSaveData()
-    {
-        CloseSaveDataUI();
     }
 
     //SaveDataButton
@@ -185,6 +246,10 @@ public class NovelModel
         _sendSaveDataButtonData.SetValueAndForceNotify(novelSaveDataButtonData);
     }
 
+    /// <summary>
+    /// Load
+    /// </summary>
+    /// <param name="saveNum"></param>
     private void Load(int saveNum)
     {
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
@@ -192,11 +257,76 @@ public class NovelModel
         SendMessage(novelMessage);
     }
 
-    //Hidden
+    /// <summary>
+    /// Auto
+    /// </summary>
+    private bool isAuto = false;
+    private void Auto()
+    {
+        isAuto = !isAuto;
+        NextMessageMove();
+    }
+
+    /// <summary>
+    /// Skip
+    /// </summary>
+
+
+    /// <summary>
+    /// Log
+    /// </summary>
+    private readonly ReactiveProperty<bool> _activeLogUI = new ReactiveProperty<bool>();
+    public IReadOnlyReactiveProperty<bool> ActiveLogUI => _activeLogUI;
+    private void Log()
+    {
+        OpenLogUI();
+    }
+
+    private void OpenLogUI()
+    {
+        _activeLogUI.SetValueAndForceNotify(true);
+    }
+
+    private void CloseLogUI()
+    {
+        _activeLogUI.SetValueAndForceNotify(false);
+    }
+
+
+    /// <summary>
+    /// Option
+    /// </summary>
+    private void CloseOptionUI()
+    {
+        _activeLogUI.SetValueAndForceNotify(false);
+    }
+
+    /// <summary>
+    /// Hidden
+    /// </summary>
     private readonly ReactiveProperty<bool> _isUIActive = new ReactiveProperty<bool>(true);
     public IReadOnlyReactiveProperty<bool> IsUIActive => _isUIActive;
     public void Hidden(bool isActive)
     {
         _isUIActive.SetValueAndForceNotify(isActive);
+    }
+
+    //CloseUI
+    public void OnClickClose(NovelButtonEnum.CloseUI closeUI)
+    {
+        switch (closeUI)
+        {
+            case NovelButtonEnum.CloseUI.Save:
+                CloseSaveDataUI();
+                break;
+
+            case NovelButtonEnum.CloseUI.Log:
+                CloseLogUI();
+                break;
+            
+            case NovelButtonEnum.CloseUI.Option:
+                CloseOptionUI();
+                break;
+        }
     }
 }

@@ -24,10 +24,14 @@ public class NovelConversationView : MonoBehaviour
     [SerializeField]
     private Text nameText;
 
+    private String nowMessage = "";
+    private IDisposable updateMessageAsObservable;
+
     // Start is called before the first frame update
     void Start()
     {
         _novelPresenter.sendMessageAsObservable.Subscribe(_ => ReceivedMessage(_)).AddTo(this);
+        _novelPresenter.skipUpdateMessageAsObservable.Subscribe(_ => SkipUpdateMessage()).AddTo(this);
     }
 
     private void ReceivedMessage(NovelMessage novelMessage)
@@ -44,17 +48,27 @@ public class NovelConversationView : MonoBehaviour
 
     private void UpdateMessage(string message)
     {
+        nowMessage = message;
         messageText.text = "";
         //messageText.text = $"{message}";
-        Observable.Range(0, message.Length)
+        updateMessageAsObservable = Observable.Range(0, message.Length)
             .Select(index => Observable.Timer(TimeSpan.FromSeconds(0.1)).Select(_ => index))
             .Concat()
+            .Finally(() =>
+            {
+                messageText.text = message;
+                _novelPresenter.OnComplatedMessageView();
+            })
             .Subscribe(_ =>
             {
                 messageText.text += $"{message[_]}";
-            },
-            () => {
-                //Debug.Log("message : complate");
             });
+    }
+
+    private void SkipUpdateMessage()
+    {
+        updateMessageAsObservable.Dispose();
+        _novelPresenter.OnComplatedMessageView();
+        messageText.text = nowMessage;
     }
 }
