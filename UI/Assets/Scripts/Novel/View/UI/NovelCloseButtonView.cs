@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UniRx;
 using Zenject;
 
-public class NovelCloseSaveDataButtonView : MonoBehaviour
+public class NovelCloseButtonView : MonoBehaviour
 {
     private NovelPresenter _novelPresenter;
 
@@ -21,6 +21,9 @@ public class NovelCloseSaveDataButtonView : MonoBehaviour
     [SerializeField]
     private Button button;
 
+    [SerializeField]
+    private NovelButtonEnum.CloseUI closeUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,6 @@ public class NovelCloseSaveDataButtonView : MonoBehaviour
     private void onClickButton()
     {
         //Debug.Log($"NovelSaveDataButtonView : saveNum : {saveNum}");
-        _novelPresenter.OnClickCloseSaveData();
+        _novelPresenter.OnClickClose(closeUI);
     }
 }

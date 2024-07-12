@@ -66,7 +66,7 @@ public class NovelPresenter
         _novelModel.OnClickSelectMessageButton(buttonNum);
     }
 
-    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
+    public void OnClickUnderButton(NovelButtonEnum.Menu menu)
     {
         _novelModel.OnClickUnderButton(menu);
     }
@@ -91,11 +91,6 @@ public class NovelPresenter
         return _novelModel.GetSaveDataButtonData(saveNum);
     }
 
-    public void OnClickCloseSaveData()
-    {
-        _novelModel.OnClickCloseSaveData();
-    }
-
     public void OnClickSaveDataButton(int saveNum)
     {
         _novelModel.OnClickSaveDataButton(saveNum);
@@ -104,7 +99,7 @@ public class NovelPresenter
     /// <summary>
     /// Auto
     /// </summary>
-    
+
 
     /// <summary>
     /// Skip
@@ -114,7 +109,11 @@ public class NovelPresenter
     /// <summary>
     /// Log
     /// </summary>
-
+    public IObservable<bool> activeLogUI =>
+            _novelModel.ActiveLogUI
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
 
     /// <summary>
     /// Option
@@ -127,4 +126,10 @@ public class NovelPresenter
             //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
             .Publish()
             .RefCount();
+
+    //CloseUI
+    public void OnClickClose(NovelButtonEnum.CloseUI closeUI)
+    {
+        _novelModel.OnClickClose(closeUI);
+    }
 }

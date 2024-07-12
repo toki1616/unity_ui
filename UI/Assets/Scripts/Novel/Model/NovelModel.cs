@@ -146,34 +146,35 @@ public class NovelModel
         SendNextMessageText();
     }
 
-    public void OnClickUnderButton(NovelUnderButtonEnum.Menu menu)
+    public void OnClickUnderButton(NovelButtonEnum.Menu menu)
     {
         //Debug.Log($"NovelModel : click : {menu}");
 
         switch (menu)
         {
-            case NovelUnderButtonEnum.Menu.Save:
+            case NovelButtonEnum.Menu.Save:
                 OpenSaveDataUI(NovelDataEnum.SaveDataMode.Save);
                 break;
-            case NovelUnderButtonEnum.Menu.Load:
+            case NovelButtonEnum.Menu.Load:
                 OpenSaveDataUI(NovelDataEnum.SaveDataMode.Load);
                 break;
-            case NovelUnderButtonEnum.Menu.QuickSave:
+            case NovelButtonEnum.Menu.QuickSave:
                 Save(SaveConst.quickSaveNum);
                 break;
-            case NovelUnderButtonEnum.Menu.QuickLoad:
+            case NovelButtonEnum.Menu.QuickLoad:
                 Load(SaveConst.quickSaveNum);
                 break;
-            case NovelUnderButtonEnum.Menu.Auto:
+            case NovelButtonEnum.Menu.Auto:
                 Auto();
                 break;
-            case NovelUnderButtonEnum.Menu.Skip:
+            case NovelButtonEnum.Menu.Skip:
                 break;
-            case NovelUnderButtonEnum.Menu.Log:
+            case NovelButtonEnum.Menu.Log:
+                Log();
                 break;
-            case NovelUnderButtonEnum.Menu.Option:
+            case NovelButtonEnum.Menu.Option:
                 break;
-            case NovelUnderButtonEnum.Menu.Hidden:
+            case NovelButtonEnum.Menu.Hidden:
                 Hidden(false);
                 break;
             default:
@@ -199,11 +200,6 @@ public class NovelModel
     private void CloseSaveDataUI()
     {
         _activeSaveDataUI.SetValueAndForceNotify(false);
-    }
-
-    public void OnClickCloseSaveData()
-    {
-        CloseSaveDataUI();
     }
 
     //SaveDataButton
@@ -279,12 +275,31 @@ public class NovelModel
     /// <summary>
     /// Log
     /// </summary>
+    private readonly ReactiveProperty<bool> _activeLogUI = new ReactiveProperty<bool>();
+    public IReadOnlyReactiveProperty<bool> ActiveLogUI => _activeLogUI;
+    private void Log()
+    {
+        OpenLogUI();
+    }
+
+    private void OpenLogUI()
+    {
+        _activeLogUI.SetValueAndForceNotify(true);
+    }
+
+    private void CloseLogUI()
+    {
+        _activeLogUI.SetValueAndForceNotify(false);
+    }
 
 
     /// <summary>
     /// Option
     /// </summary>
-
+    private void CloseOptionUI()
+    {
+        _activeLogUI.SetValueAndForceNotify(false);
+    }
 
     /// <summary>
     /// Hidden
@@ -294,5 +309,24 @@ public class NovelModel
     public void Hidden(bool isActive)
     {
         _isUIActive.SetValueAndForceNotify(isActive);
+    }
+
+    //CloseUI
+    public void OnClickClose(NovelButtonEnum.CloseUI closeUI)
+    {
+        switch (closeUI)
+        {
+            case NovelButtonEnum.CloseUI.Save:
+                CloseSaveDataUI();
+                break;
+
+            case NovelButtonEnum.CloseUI.Log:
+                CloseLogUI();
+                break;
+            
+            case NovelButtonEnum.CloseUI.Option:
+                CloseOptionUI();
+                break;
+        }
     }
 }
