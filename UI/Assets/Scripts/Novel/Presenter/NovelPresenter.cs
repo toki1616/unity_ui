@@ -115,6 +115,11 @@ public class NovelPresenter
             .Publish()
             .RefCount();
 
+    public IObservable<NovelMessage> sendMessageLogObservable =>
+            _novelModel.SendMessageLogReactiveProperty
+            .Skip(1)    //登録時に走らないように
+            .Share();
+
     /// <summary>
     /// Option
     /// </summary>

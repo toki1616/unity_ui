@@ -279,6 +279,7 @@ public class NovelModel
     public IReadOnlyReactiveProperty<bool> ActiveLogUI => _activeLogUI;
     private void Log()
     {
+        SendMessageLogs();
         OpenLogUI();
     }
 
@@ -290,6 +291,27 @@ public class NovelModel
     private void CloseLogUI()
     {
         _activeLogUI.SetValueAndForceNotify(false);
+    }
+
+    private readonly ReactiveProperty<NovelMessage> _sendMessageLogReactiveProperty = new ReactiveProperty<NovelMessage>();
+    public IReadOnlyReactiveProperty<NovelMessage> SendMessageLogReactiveProperty => _sendMessageLogReactiveProperty;
+    private void SendMessageLogs()
+    {
+        List<NovelMessage> novelMessages = _novelMessageData.GetNovelMessagesLog();
+        if (novelMessages == null)
+        {
+            return;
+        }
+
+        foreach (var novelMessage in novelMessages)
+        {
+            SendMessageLog(novelMessage);
+        }
+    }
+
+    private void SendMessageLog(NovelMessage novelMessage)
+    {
+        _sendMessageLogReactiveProperty.SetValueAndForceNotify(novelMessage);
     }
 
 
