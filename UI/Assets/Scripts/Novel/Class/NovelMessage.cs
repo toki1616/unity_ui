@@ -10,6 +10,7 @@ public class NovelMessageData
     List<NovelMessage> novelMessageData;
     //読み込んでいないため-1から始める
     private int nowStoryNum = -1;
+    private int logFirstStoryNum = -1;
 
     public NovelMessageData(NovelRouteDataList novelRouteDataList)
     {
@@ -127,6 +128,25 @@ public class NovelMessageData
         }
 
         return true;
+    }
+
+    public List<NovelMessage> GetNovelMessagesLog()
+    {
+        if (logFirstStoryNum == nowStoryNum)
+        {
+            return null;
+        }
+
+        List<NovelMessage> novelMessages = new List<NovelMessage>();
+        for (var i = logFirstStoryNum + 1; i <= nowStoryNum; i++)
+        {
+            NovelMessage novelMessage = GetNovelMessage(i);
+            novelMessages.Add(novelMessage);
+        }
+
+        logFirstStoryNum = nowStoryNum;
+
+        return novelMessages;
     }
 }
 
