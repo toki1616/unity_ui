@@ -9,6 +9,13 @@ public class NovelDataEnum
         Save,
         Load,
     }
+
+    public enum ReadMode
+    {
+        None,
+        Auto,
+        Skip,
+    }
 }
 
 public class NovelButtonEnum

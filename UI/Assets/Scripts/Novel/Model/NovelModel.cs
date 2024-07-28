@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using UniRx;
+using Cysharp.Threading.Tasks;
 
 using Util;
 using Const;
@@ -12,11 +15,23 @@ public class NovelModel
     private readonly NovelSaveDataList _novelSaveDataList;
     private readonly NovelRouteDataList _novelRouteDataList;
 
+    private NovelDataEnum.ReadMode nowReadMode = NovelDataEnum.ReadMode.None;
+
     public NovelModel()
     {
         _novelRouteDataList = new NovelRouteDataList();
         _novelMessageData = new NovelMessageData(_novelRouteDataList);
         _novelSaveDataList = new NovelSaveDataList();
+
+        //Observable
+        //    .EveryUpdate()
+        //    .Subscribe(x =>
+        //    {
+        //        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        //        {
+        //            SkipMessage();
+        //        }
+        //    });
     }
 
     public void SendTap()
@@ -28,7 +43,7 @@ public class NovelModel
             return;
         }
 
-        if (isAuto)
+        if (nowReadMode == NovelDataEnum.ReadMode.Auto)
         {
             return;
         }
@@ -79,6 +94,7 @@ public class NovelModel
         SendSelectMessage(novelMessage);
     }
 
+    private bool isSelectMessage = false;
     private void SendSelectMessage(NovelMessage novelMessage)
     {
         string[] selectMessages = novelMessage.GetSelectMessages();
@@ -86,6 +102,13 @@ public class NovelModel
         {
             return;
         }
+
+        if (isSelectMessage)
+        {
+            return;
+        }
+        isSelectMessage = true;
+
         _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
     }
 
@@ -118,10 +141,15 @@ public class NovelModel
     {
         isComplatedMessage = true;
 
-        if (isAuto)
+        if (nowReadMode == NovelDataEnum.ReadMode.Auto)
         {
             NextMessageMove();
         }
+
+        //if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        //{
+        //    SkipMessage();
+        //}
     }
 
     public Subject<Unit> skipUpdateMessage = new Subject<Unit>();
@@ -144,6 +172,8 @@ public class NovelModel
         _novelRouteDataList.AddSelectRoute(route: novelMessage.GetRoute(), routeCondition: buttonNum);
         onClickSelectButtonSubject.OnNext(Unit.Default);
         SendNextMessageText();
+
+        isSelectMessage = false;
     }
 
     public void OnClickUnderButton(NovelButtonEnum.Menu menu)
@@ -168,6 +198,7 @@ public class NovelModel
                 Auto();
                 break;
             case NovelButtonEnum.Menu.Skip:
+                Skip();
                 break;
             case NovelButtonEnum.Menu.Log:
                 Log();
@@ -260,17 +291,42 @@ public class NovelModel
     /// <summary>
     /// Auto
     /// </summary>
-    private bool isAuto = false;
     private void Auto()
     {
-        isAuto = !isAuto;
+        if (nowReadMode == NovelDataEnum.ReadMode.Auto)
+        {
+            nowReadMode = NovelDataEnum.ReadMode.None;
+        }
+        else
+        {
+            nowReadMode = NovelDataEnum.ReadMode.Auto;
+        }
+
         NextMessageMove();
     }
 
     /// <summary>
     /// Skip
     /// </summary>
+    private void Skip()
+    {        
+        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        {
+            nowReadMode = NovelDataEnum.ReadMode.None;
+        }
+        else
+        {
+            nowReadMode = NovelDataEnum.ReadMode.Skip;
+            SkipMessage();
+        }
+    }
 
+    private async UniTask SkipMessage()
+    {
+        //await UniTask.Delay(TimeSpan.FromSeconds(3f));
+        NextMessageMove();
+        //SendSkipUpdateMessage();
+    }
 
     /// <summary>
     /// Log
