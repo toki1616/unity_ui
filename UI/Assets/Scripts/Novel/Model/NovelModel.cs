@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using UniRx;
+using Cysharp.Threading.Tasks;
 
 using Util;
 using Const;
@@ -11,6 +14,8 @@ public class NovelModel
     private readonly NovelMessageData _novelMessageData;
     private readonly NovelSaveDataList _novelSaveDataList;
     private readonly NovelRouteDataList _novelRouteDataList;
+
+    private NovelDataEnum.ReadMode nowReadMode = NovelDataEnum.ReadMode.None;
 
     public NovelModel()
     {
@@ -28,7 +33,7 @@ public class NovelModel
             return;
         }
 
-        if (isAuto)
+        if (nowReadMode == NovelDataEnum.ReadMode.Auto)
         {
             return;
         }
@@ -79,6 +84,7 @@ public class NovelModel
         SendSelectMessage(novelMessage);
     }
 
+    private bool isSelectMessage = false;
     private void SendSelectMessage(NovelMessage novelMessage)
     {
         string[] selectMessages = novelMessage.GetSelectMessages();
@@ -86,6 +92,13 @@ public class NovelModel
         {
             return;
         }
+
+        if (isSelectMessage)
+        {
+            return;
+        }
+        isSelectMessage = true;
+
         _sendSelectMessages.SetValueAndForceNotify(novelMessage.GetSelectMessages());
     }
 
@@ -113,14 +126,49 @@ public class NovelModel
         SendNextMessageText();
     }
 
+    private void SkipNextMessageMove()
+    {
+        if (!_isUIActive.Value)
+        {
+            return;
+        }
+
+        if (!isSelectMessage)
+        {
+            if (_novelMessageData.IsSendSelectMessage())
+            {
+                SendNowSelectMessage();
+                return;
+            }
+        }
+
+        SendNextMessageText();
+        SendSkipUpdateMessage();
+    }
+
     private bool isComplatedMessage = true;
-    public void OnComplatedMessageView()
+    public async UniTask OnComplatedMessageView()
     {
         isComplatedMessage = true;
 
-        if (isAuto)
+        if (nowReadMode == NovelDataEnum.ReadMode.Auto)
         {
-            NextMessageMove();
+            await UniTask.Delay(TimeSpan.FromSeconds(2f));
+
+            if (nowReadMode == NovelDataEnum.ReadMode.Auto)
+            {
+                NextMessageMove();
+            }
+        }
+
+        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
+
+            if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+            {
+                SkipNextMessageMove();
+            }
         }
     }
 
@@ -143,7 +191,17 @@ public class NovelModel
 
         _novelRouteDataList.AddSelectRoute(route: novelMessage.GetRoute(), routeCondition: buttonNum);
         onClickSelectButtonSubject.OnNext(Unit.Default);
-        SendNextMessageText();
+
+        if (nowReadMode != NovelDataEnum.ReadMode.Skip)
+        {
+            SendNextMessageText();
+        }
+        else
+        {
+            SkipNextMessageMove();
+        }
+
+        isSelectMessage = false;
     }
 
     public void OnClickUnderButton(NovelButtonEnum.Menu menu)
@@ -168,6 +226,7 @@ public class NovelModel
                 Auto();
                 break;
             case NovelButtonEnum.Menu.Skip:
+                Skip();
                 break;
             case NovelButtonEnum.Menu.Log:
                 Log();
@@ -260,17 +319,35 @@ public class NovelModel
     /// <summary>
     /// Auto
     /// </summary>
-    private bool isAuto = false;
     private void Auto()
     {
-        isAuto = !isAuto;
+        if (nowReadMode == NovelDataEnum.ReadMode.Auto)
+        {
+            nowReadMode = NovelDataEnum.ReadMode.None;
+        }
+        else
+        {
+            nowReadMode = NovelDataEnum.ReadMode.Auto;
+        }
+
         NextMessageMove();
     }
 
     /// <summary>
     /// Skip
     /// </summary>
-
+    private void Skip()
+    {        
+        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        {
+            nowReadMode = NovelDataEnum.ReadMode.None;
+        }
+        else
+        {
+            nowReadMode = NovelDataEnum.ReadMode.Skip;
+            SkipNextMessageMove();
+        }
+    }
 
     /// <summary>
     /// Log
