@@ -67,8 +67,11 @@ public class NovelConversationView : MonoBehaviour
 
     private void SkipUpdateMessage()
     {
-        updateMessageAsObservable.Dispose();
-        _novelPresenter.OnComplatedMessageView();
+        if (updateMessageAsObservable != null)
+        {
+            updateMessageAsObservable.Dispose();
+        }
+        
         messageText.text = nowMessage;
     }
 }

@@ -22,16 +22,6 @@ public class NovelModel
         _novelRouteDataList = new NovelRouteDataList();
         _novelMessageData = new NovelMessageData(_novelRouteDataList);
         _novelSaveDataList = new NovelSaveDataList();
-
-        //Observable
-        //    .EveryUpdate()
-        //    .Subscribe(x =>
-        //    {
-        //        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
-        //        {
-        //            SkipMessage();
-        //        }
-        //    });
     }
 
     public void SendTap()
@@ -136,8 +126,28 @@ public class NovelModel
         SendNextMessageText();
     }
 
+    private void SkipNextMessageMove()
+    {
+        if (!_isUIActive.Value)
+        {
+            return;
+        }
+
+        if (!isSelectMessage)
+        {
+            if (_novelMessageData.IsSendSelectMessage())
+            {
+                SendNowSelectMessage();
+                return;
+            }
+        }
+
+        SendNextMessageText();
+        SendSkipUpdateMessage();
+    }
+
     private bool isComplatedMessage = true;
-    public void OnComplatedMessageView()
+    public async UniTask OnComplatedMessageView()
     {
         isComplatedMessage = true;
 
@@ -146,10 +156,11 @@ public class NovelModel
             NextMessageMove();
         }
 
-        //if (nowReadMode == NovelDataEnum.ReadMode.Skip)
-        //{
-        //    SkipMessage();
-        //}
+        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
+            SkipNextMessageMove();
+        }
     }
 
     public Subject<Unit> skipUpdateMessage = new Subject<Unit>();
@@ -171,7 +182,15 @@ public class NovelModel
 
         _novelRouteDataList.AddSelectRoute(route: novelMessage.GetRoute(), routeCondition: buttonNum);
         onClickSelectButtonSubject.OnNext(Unit.Default);
-        SendNextMessageText();
+
+        if (nowReadMode != NovelDataEnum.ReadMode.Skip)
+        {
+            SendNextMessageText();
+        }
+        else
+        {
+            SkipNextMessageMove();
+        }
 
         isSelectMessage = false;
     }
@@ -317,15 +336,8 @@ public class NovelModel
         else
         {
             nowReadMode = NovelDataEnum.ReadMode.Skip;
-            SkipMessage();
+            SkipNextMessageMove();
         }
-    }
-
-    private async UniTask SkipMessage()
-    {
-        //await UniTask.Delay(TimeSpan.FromSeconds(3f));
-        NextMessageMove();
-        //SendSkipUpdateMessage();
     }
 
     /// <summary>
