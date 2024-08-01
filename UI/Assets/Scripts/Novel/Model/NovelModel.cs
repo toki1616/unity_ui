@@ -153,13 +153,22 @@ public class NovelModel
 
         if (nowReadMode == NovelDataEnum.ReadMode.Auto)
         {
-            NextMessageMove();
+            await UniTask.Delay(TimeSpan.FromSeconds(2f));
+
+            if (nowReadMode == NovelDataEnum.ReadMode.Auto)
+            {
+                NextMessageMove();
+            }
         }
 
         if (nowReadMode == NovelDataEnum.ReadMode.Skip)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
-            SkipNextMessageMove();
+
+            if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+            {
+                SkipNextMessageMove();
+            }
         }
     }
 
