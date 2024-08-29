@@ -60,6 +60,31 @@ public class NovelButtonEnum
         }
     }
 
+    public enum StartMenu
+    {
+        Start,
+        Load,
+        QuickLoad,
+        Option,
+    }
+
+    public string GetStartMenuListName(StartMenu startMenuEnum)
+    {
+        switch (startMenuEnum)
+        {
+            case StartMenu.Start:
+                return "SAVE";
+            case StartMenu.Load:
+                return "LOAD";
+            case StartMenu.QuickLoad:
+                return "Q.LOAD";
+            case StartMenu.Option:
+                return "OPTION";
+            default:
+                return "";
+        }
+    }
+
     public enum CloseUI
     {
         Save,
