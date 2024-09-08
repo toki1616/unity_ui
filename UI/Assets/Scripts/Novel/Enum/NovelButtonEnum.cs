@@ -73,7 +73,7 @@ public class NovelButtonEnum
         switch (startMenuEnum)
         {
             case StartMenu.Start:
-                return "SAVE";
+                return "START";
             case StartMenu.Load:
                 return "LOAD";
             case StartMenu.QuickLoad:

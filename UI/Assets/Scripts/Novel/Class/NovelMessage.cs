@@ -23,6 +23,12 @@ public class NovelMessageData
         //}
     }
 
+    public void Initialize()
+    {
+        nowStoryNum = -1;
+        logFirstStoryNum = -1;
+    }
+
     public NovelMessage GetNextMessage()
     {
         if (novelMessageData.Count <= 0)
