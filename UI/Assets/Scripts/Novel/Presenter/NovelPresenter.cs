@@ -23,6 +23,18 @@ public class NovelPresenter
         _novelModel.SendTap();
     }
 
+    //Title
+    public IObservable<bool> titleUIAsObservable =>
+            _novelModel.TitleUIReactiveProperty
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
+
+    public void OnClickTitleMenuButton(NovelButtonEnum.StartMenu menu)
+    {
+        _novelModel.OnClickTitleMenuButton(menu);
+    }
+
     //Message
     public IObservable<NovelMessage> sendMessageAsObservable =>
             _novelModel.SendNextMessage
@@ -136,5 +148,26 @@ public class NovelPresenter
     public void OnClickClose(NovelButtonEnum.CloseUI closeUI)
     {
         _novelModel.OnClickClose(closeUI);
+    }
+
+    //Fade
+    public IObservable<Unit> fadeActiveAsObservable =>
+            _novelModel.fadeActiveSubject
+            .Publish()
+            .RefCount();
+
+    public IObservable<Unit> fadeEnactiveAsObservable =>
+            _novelModel.fadeEnactiveSubject
+            .Publish()
+            .RefCount();
+
+    public void ComplateFadeImageActive()
+    {
+        _novelModel.ComplateFadeImageActive();
+    }
+
+    public void ComplateFadeImageEnactive()
+    {
+        _novelModel.ComplateFadeImageEnactive();
     }
 }

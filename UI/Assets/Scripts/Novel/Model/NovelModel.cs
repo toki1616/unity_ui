@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks;
 
 using Util;
 using Const;
+using myEnum;
 
 public class NovelModel
 {
@@ -313,6 +314,12 @@ public class NovelModel
     {
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
         _novelRouteDataList.LoadNovelRouteData(saveNum);
+
+        if (_titleUIReactiveProperty.Value)
+        {
+            _titleUIReactiveProperty.SetValueAndForceNotify(false);
+        }
+
         SendMessage(novelMessage);
     }
 
@@ -425,6 +432,104 @@ public class NovelModel
             
             case NovelButtonEnum.CloseUI.Option:
                 CloseOptionUI();
+                break;
+        }
+    }
+
+    //StartMenu
+    private readonly ReactiveProperty<bool> _titleUIReactiveProperty = new ReactiveProperty<bool>(true);
+    public IReadOnlyReactiveProperty<bool> TitleUIReactiveProperty => _titleUIReactiveProperty;
+
+    public void OnClickTitleMenuButton(NovelButtonEnum.StartMenu menu)
+    {
+        //Debug.Log($"NovelModel : title : click : {menu}");
+
+        switch (menu)
+        {
+            case NovelButtonEnum.StartMenu.Start:
+                StartFadeActive();
+                break;
+
+            case NovelButtonEnum.StartMenu.Load:
+                OpenSaveDataUI(NovelDataEnum.SaveDataMode.Load);
+                break;
+
+            case NovelButtonEnum.StartMenu.QuickLoad:
+                Load(SaveConst.quickSaveNum);
+                break;
+
+            case NovelButtonEnum.StartMenu.Option:
+                break;
+            default:
+                break;
+        }
+    }
+
+    //Start
+    private void StartFadeActive()
+    {
+        _novelMessageData.Initialize();
+        story = NovelStoryEnum.Story.Start;
+
+        fadeActiveSubject.OnNext(Unit.Default);
+    }
+    private void StartFadeEnactive()
+    {
+        _titleUIReactiveProperty.SetValueAndForceNotify(false);
+
+        fadeEnactiveSubject.OnNext(Unit.Default);
+    }
+
+    private void StartComplateFade()
+    {
+        NextMessageMove();
+    }
+
+    //End
+    private void EndFadeActive()
+    {
+        story = NovelStoryEnum.Story.End;
+
+        fadeActiveSubject.OnNext(Unit.Default);
+    }
+    private void EndFadeEnactive()
+    {
+        fadeEnactiveSubject.OnNext(Unit.Default);
+    }
+
+    //fade
+    public Subject<Unit> fadeActiveSubject = new Subject<Unit>();
+    public Subject<Unit> fadeEnactiveSubject = new Subject<Unit>();
+
+    private NovelStoryEnum.Story story = NovelStoryEnum.Story.Start;
+    
+    public void ComplateFadeImageActive()
+    {
+        //Debug.Log("ComplateFadeImageActive");
+
+        switch (story)
+        {
+            case NovelStoryEnum.Story.Start:
+                StartFadeEnactive();
+                break;
+
+            case NovelStoryEnum.Story.End:
+                EndFadeEnactive();
+                break;
+        }
+    }
+
+    public void ComplateFadeImageEnactive()
+    {
+        //Debug.Log("ComplateFadeImageEnactive");
+
+        switch (story)
+        {
+            case NovelStoryEnum.Story.Start:
+                StartComplateFade();
+                break;
+
+            case NovelStoryEnum.Story.End:
                 break;
         }
     }
