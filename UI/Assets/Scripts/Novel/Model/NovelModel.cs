@@ -314,6 +314,12 @@ public class NovelModel
     {
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
         _novelRouteDataList.LoadNovelRouteData(saveNum);
+
+        if (_titleUIReactiveProperty.Value)
+        {
+            _titleUIReactiveProperty.SetValueAndForceNotify(false);
+        }
+
         SendMessage(novelMessage);
     }
 
