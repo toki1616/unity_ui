@@ -474,6 +474,11 @@ public class NovelModel
         fadeEnactiveSubject.OnNext(Unit.Default);
     }
 
+    private void StartComplateFade()
+    {
+        NextMessageMove();
+    }
+
     //End
     private void EndFadeActive()
     {
@@ -515,6 +520,7 @@ public class NovelModel
         switch (story)
         {
             case NovelStoryEnum.Story.Start:
+                StartComplateFade();
                 break;
 
             case NovelStoryEnum.Story.End:
