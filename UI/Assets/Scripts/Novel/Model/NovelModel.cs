@@ -312,8 +312,8 @@ public class NovelModel
     /// <param name="saveNum"></param>
     private void Load(int saveNum)
     {
-        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
         _novelRouteDataList.LoadNovelRouteData(saveNum);
+        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
 
         if (_titleUIReactiveProperty.Value)
         {
