@@ -25,7 +25,7 @@ public class NovelSaveDataList
         }
         else
         {
-            return new NovelSaveData(saveNum: saveNum, storyNum: NovelMessageConst.notFindStoryNum);
+            return null;
         }
     }
 
@@ -114,7 +114,7 @@ public class NovelSaveData
 
     public bool isCanLoad()
     {
-        return storyNum != NovelMessageConst.notFindStoryNum;
+        return storyNum != NovelMessageConst.notFindStoryNum || this == null;
     }
 }
 

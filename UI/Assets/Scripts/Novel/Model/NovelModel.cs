@@ -268,7 +268,7 @@ public class NovelModel
         NovelSaveData novelSaveData = _novelSaveDataList.GetNovelSaveData(saveNum);
         //Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
 
-        if (!novelSaveData.isCanLoad())
+        if (novelSaveData == null || !novelSaveData.isCanLoad())
         {
             return new NovelSaveDataButtonData(novelSaveData);
         }
