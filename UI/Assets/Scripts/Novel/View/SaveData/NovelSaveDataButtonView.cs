@@ -61,7 +61,7 @@ public class NovelSaveDataButtonView : MonoBehaviour
         //Debug.Log($"NovelSaveDataButtonView : SetNovelSaveDataButtonData");
         //Debug.Log($"NovelSaveDataButtonView : Self : saveNum : {saveNum}");
         //Debug.Log($"NovelModel : SetNovelSaveDataButtonData : save : {novelSaveDataButtonData.GetNovelSaveData().SaveNum} : story : {novelSaveDataButtonData.GetNovelSaveData().StoryNum}");
-        if (novelSaveDataButtonData.GetNovelSaveData() == null || !novelSaveDataButtonData.GetNovelSaveData().isCanLoad())
+        if (novelSaveDataButtonData.GetNovelSaveData() == null || !novelSaveDataButtonData.GetNovelSaveData().isCanLoad() || novelSaveDataButtonData.GetNovelMessage() == null)
         {
             return;
         }

@@ -265,7 +265,10 @@ public class NovelModel
     //SaveDataButton
     public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
     {
+        Debug.Log($"GetSaveDataButtonData : saveNum : {saveNum}");
+
         NovelSaveData novelSaveData = _novelSaveDataList.GetNovelSaveData(saveNum);
+        NovelUseRouteData novelUseRouteData = _novelRouteDataList.GetNovelUseRouteData(saveNum);
         //Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
 
         if (novelSaveData == null || !novelSaveData.isCanLoad())
@@ -273,7 +276,7 @@ public class NovelModel
             return new NovelSaveDataButtonData(novelSaveData);
         }
 
-        NovelMessage novelMessage = _novelMessageData.GetSaveDataNovelMessage(novelSaveData.StoryNum);
+        NovelMessage novelMessage = _novelMessageData.GetSaveDataNovelMessage(novelSaveData.StoryNum, novelUseRouteData.GetRouteConditionsFromNovelRouteData());
         //Debug.Log($"NovelModel : CreateSaveButton : message : {novelMessage.GetMessage()}");
         NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
         return novelSaveDataButtonData;

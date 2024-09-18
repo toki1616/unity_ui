@@ -62,6 +62,17 @@ public class NovelRouteDataList
         //}
     }
 
+    public NovelUseRouteData GetNovelUseRouteData(int saveNum)
+    {
+        var foundData = novelRouteSaveDataList.Find(novelRouteSaveData => novelRouteSaveData.SaveNum == saveNum);
+        if (foundData == null)
+        {
+            return null;
+        }
+
+        return foundData.NovelUseRouteData;
+    }
+
     public void AddSelectRoute(string route, int routeCondition)
     {
         //Debug.Log($"AddSelectRoute : route : {route}, routeCondition : {routeCondition}");
