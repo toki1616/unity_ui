@@ -87,8 +87,7 @@ public class NovelMessageData
             return null;
         }
 
-        var novelMessage = GetNovelMessage(storyNum);
-        //var novelMessage = GetNovelMessage(storyNum, nowRouteList);
+        var novelMessage = GetNovelMessage(storyNum, nowRouteList);
 
         return novelMessage;
     }
