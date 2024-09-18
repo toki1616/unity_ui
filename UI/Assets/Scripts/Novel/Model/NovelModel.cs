@@ -265,15 +265,18 @@ public class NovelModel
     //SaveDataButton
     public NovelSaveDataButtonData GetSaveDataButtonData(int saveNum)
     {
+        Debug.Log($"GetSaveDataButtonData : saveNum : {saveNum}");
+
         NovelSaveData novelSaveData = _novelSaveDataList.GetNovelSaveData(saveNum);
+        NovelUseRouteData novelUseRouteData = _novelRouteDataList.GetNovelUseRouteData(saveNum);
         //Debug.Log($"NovelModel : CreateSaveButton : save : {novelSaveData.SaveNum} : story : {novelSaveData.StoryNum}");
 
-        if (!novelSaveData.isCanLoad())
+        if (novelSaveData == null || !novelSaveData.isCanLoad())
         {
             return new NovelSaveDataButtonData(novelSaveData);
         }
 
-        NovelMessage novelMessage = _novelMessageData.GetSaveDataNovelMessage(novelSaveData.StoryNum);
+        NovelMessage novelMessage = _novelMessageData.GetSaveDataNovelMessage(novelSaveData.StoryNum, novelUseRouteData.GetRouteConditionsFromNovelRouteData());
         //Debug.Log($"NovelModel : CreateSaveButton : message : {novelMessage.GetMessage()}");
         NovelSaveDataButtonData novelSaveDataButtonData = new NovelSaveDataButtonData(novelMessage, novelSaveData);
         return novelSaveDataButtonData;
@@ -312,8 +315,8 @@ public class NovelModel
     /// <param name="saveNum"></param>
     private void Load(int saveNum)
     {
-        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
         _novelRouteDataList.LoadNovelRouteData(saveNum);
+        NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
 
         if (_titleUIReactiveProperty.Value)
         {

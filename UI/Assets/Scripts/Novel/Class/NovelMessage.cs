@@ -79,26 +79,23 @@ public class NovelMessageData
         return GetNovelMessage(nowStoryNum);
     }
 
-    public NovelMessage GetSaveDataNovelMessage(int storyNum)
+    public NovelMessage GetSaveDataNovelMessage(int storyNum, List<string> nowRouteList)
     {
         if (novelMessageData.Count <= 0)
         {
             //Debug.Log("not message data");
-            return new NovelMessage(storyNum: 0, route: "", displayRouteCondition: "", message: "データがありません", selectMessage: "", characterName: "データがありません", characterImagePath: "", backgroundImagePath: "");
+            return null;
         }
 
-        var novelMessage = GetNovelMessage(storyNum);
-        if (novelMessage == null)
-        {
-            //Debug.Log("null message");
-            return new NovelMessage();
-        }
+        var novelMessage = GetNovelMessage(storyNum, nowRouteList);
 
-        return GetNovelMessage(storyNum);
+        return novelMessage;
     }
 
-    private NovelMessage GetNovelMessage(int storyNum)
+    private NovelMessage GetNovelMessage(int storyNum, List<string> nowRouteList = null)
     {
+        Debug.Log($"GetNovelMessage : storyNum : {storyNum}");
+
         var novelMessages = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum);
 
         if (novelMessages == null)
@@ -108,7 +105,11 @@ public class NovelMessageData
 
         novelMessages.Sort((a, b) => b.GetDisplayRouteConditions().Length.CompareTo(a.GetDisplayRouteConditions().Length));
 
-        List<string> nowRouteList = _novelRouteDataList.NowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
+        if (nowRouteList == null)
+        {
+            nowRouteList = _novelRouteDataList.NowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
+        }
+
         //foreach (string nowRoute in nowRouteList)
         //{
         //    Debug.Log($"nowRoute : {nowRoute}");
