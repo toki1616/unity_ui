@@ -10,6 +10,7 @@ public class NovelMessageData
     List<NovelMessage> novelMessageData;
     //読み込んでいないため-1から始める
     private int nowStoryNum = -1;
+    private int maxStoryNum = 1;
     private int logFirstStoryNum = -1;
 
     public NovelMessageData(NovelRouteDataList novelRouteDataList)
@@ -21,6 +22,8 @@ public class NovelMessageData
         //{
         //    Debug.Log($"NovelMessage : storyNum ：{message.GetStoryNum()}, route ：{message.GetRoute()}, message ：{message.GetMessage()}, selectMessage ：{message.GetSelectMessage()}, characterName ：{message.GetCharacterName()}, characterImagePath : {message.GetCharacterImagePath()}, backgroundImagePath : {message.GetBackgroundImagePath()}");
         //}
+
+        maxStoryNum = novelMessageData.Max(novelMessage => novelMessage.GetStoryNum());
     }
 
     public void Initialize()
@@ -154,6 +157,11 @@ public class NovelMessageData
         logFirstStoryNum = nowStoryNum;
 
         return novelMessages;
+    }
+
+    public bool isEnd()
+    {
+        return maxStoryNum <= nowStoryNum;
     }
 }
 
