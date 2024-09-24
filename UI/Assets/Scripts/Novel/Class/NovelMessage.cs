@@ -97,7 +97,7 @@ public class NovelMessageData
 
     private NovelMessage GetNovelMessage(int storyNum, List<string> nowRouteList = null)
     {
-        Debug.Log($"GetNovelMessage : storyNum : {storyNum}");
+        //Debug.Log($"GetNovelMessage : storyNum : {storyNum}");
 
         var novelMessages = novelMessageData.FindAll(novelMessage => novelMessage.GetStoryNum() == storyNum);
 

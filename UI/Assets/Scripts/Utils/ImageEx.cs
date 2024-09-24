@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 
-namespace Extention
+namespace MyExtention
 {
     public static class ImageEx
     {
