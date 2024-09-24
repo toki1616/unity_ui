@@ -29,6 +29,8 @@ public class NovelModel
         _sendBackGroundImage.SetValueAndForceNotify(null);
         //characterImage
         _sendCharacterImage.SetValueAndForceNotify(null);
+        //selectMessagea
+        _sendSelectMessages.SetValueAndForceNotify(null);
 
         isSelectMessage = false;
         isComplatedMessage = true;
@@ -335,6 +337,8 @@ public class NovelModel
     /// <param name="saveNum"></param>
     private void Load(int saveNum)
     {
+        InitializeNovelViewData();
+
         _novelRouteDataList.LoadNovelRouteData(saveNum);
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
 
