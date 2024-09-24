@@ -134,7 +134,10 @@ public class NovelPresenter
     /// <summary>
     /// Option
     /// </summary>
-
+    public IObservable<bool> optionUIActiveObservable =>
+        _novelModel.OptionUIActiveReactiveProperty
+        .Skip(1)    //登録時に走らないように
+        .Share();
 
     //Hidden
     public IObservable<bool> isUIHidden =>
