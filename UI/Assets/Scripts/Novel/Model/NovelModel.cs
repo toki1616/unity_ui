@@ -21,6 +21,19 @@ public class NovelModel
         _novelSaveDataList = new NovelSaveDataList();
     }
 
+    private void InitializeNovelViewData()
+    {
+        //novelMessage
+        _sendNextMessage.SetValueAndForceNotify(null);
+        //BackgroundImage
+        _sendBackGroundImage.SetValueAndForceNotify(null);
+        //characterImage
+        _sendCharacterImage.SetValueAndForceNotify(null);
+
+        isSelectMessage = false;
+        isComplatedMessage = true;
+    }
+
     public void SendTap()
     {
         //Debug.Log($"test : NovelModel : SendTap");
@@ -478,6 +491,7 @@ public class NovelModel
 
     private void OpenTitleUI()
     {
+        InitializeNovelViewData();
         _endUIActiveReactiveProperty.SetValueAndForceNotify(false);
         _titleUIReactiveProperty.SetValueAndForceNotify(true);
     }

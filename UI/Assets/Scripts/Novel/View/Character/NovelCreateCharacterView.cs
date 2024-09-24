@@ -31,6 +31,11 @@ public class NovelCreateCharacterView : MonoBehaviour
         //Debug.Log($"NovelCreateCharacterView : ReceivedBackgroundImage");
         DeleteChildObject();
 
+        if (imageList == null)
+        {
+            return;
+        }
+
         foreach (var image in imageList)
         {
             GameObject spawnObject = Instantiate(_spawnCharacterImagePrefab, this.transform);

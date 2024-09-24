@@ -34,9 +34,21 @@ public class NovelConversationView : MonoBehaviour
         _novelPresenter.skipUpdateMessageAsObservable.Subscribe(_ => SkipUpdateMessage()).AddTo(this);
     }
 
+    private void InitializeViewData()
+    {
+        UpdateName("");
+        UpdateMessage("");
+    }
+
     private void ReceivedMessage(NovelMessage novelMessage)
     {
         //Debug.Log($"NovelConversationView : ReceivedMessage");
+        if (novelMessage == null)
+        {
+            InitializeViewData();
+            return;
+        }
+
         UpdateName(novelMessage.GetCharacterName());
         UpdateMessage(novelMessage.GetMessage());
     }
