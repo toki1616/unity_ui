@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UniRx;
+using UnityEngine;
 
 public class NovelPresenter
 {
@@ -150,14 +149,37 @@ public class NovelPresenter
         _novelModel.OnClickClose(closeUI);
     }
 
-    //Fade
-    public IObservable<Unit> fadeActiveAsObservable =>
-            _novelModel.fadeActiveSubject
+    //End
+    public IObservable<bool> endUIActiveAsObservable =>
+            _novelModel.EndUIActiveReactiveProperty
+            //.Do(value => Debug.Log($"endUIActiveAsObservable : {value}"))
             .Publish()
             .RefCount();
 
-    public IObservable<Unit> fadeEnactiveAsObservable =>
-            _novelModel.fadeEnactiveSubject
+    public IObservable<bool> fadeEndTextActiveAsObservable =>
+            _novelModel.fadeEndTextActiveSubject
+            //.Do(value => Debug.Log($"fadeEndTextActiveAsObservable : {value}"))
+            .Publish()
+            .RefCount();
+
+    public void ComplateFadeEndTextActive()
+    {
+        _novelModel.ComplateFadeEndTextActive();
+    }
+
+    public void ComplateFadeEndTextEnactive()
+    {
+        _novelModel.ComplateFadeEndTextEnactive();
+    }
+
+    //Fade
+    public IObservable<bool> uiHiddenViewfadeIsActiveAsObservable =>
+            _novelModel.uiHiddenViewfadeIsActiveSubject
+            .Publish()
+            .RefCount();
+
+    public IObservable<bool> uiHiddenViewIsActiveAsObservable =>
+            _novelModel.uiHiddenViewIsActiveSubject
             .Publish()
             .RefCount();
 

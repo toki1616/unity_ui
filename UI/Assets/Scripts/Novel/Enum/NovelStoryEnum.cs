@@ -8,6 +8,8 @@ namespace myEnum{
         public enum Story
         {
             Start,
+            Main,
+            EndStart,
             End,
         }
     }
