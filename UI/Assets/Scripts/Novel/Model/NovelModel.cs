@@ -75,12 +75,14 @@ public class NovelModel
 
     private void SendMessage(NovelMessage novelMessage)
     {
+        //Debug.Log($"NovelMessage : storyNum ：{novelMessage.GetStoryNum()}, route ：{novelMessage.GetRoute()}, message ：{novelMessage.GetMessage()}, selectMessage ：{novelMessage.GetSelectMessage()}, characterName ：{novelMessage.GetCharacterName()}, characterImagePath : {novelMessage.GetCharacterImageList()}, backgroundImagePath : {novelMessage.GetBackgroundImage().name}");
+
         if (story != NovelStoryEnum.Story.Main)
         {
             story = NovelStoryEnum.Story.Main;
         }
 
-        //Debug.Log($"NovelMessage : storyNum ：{novelMessage.GetStoryNum()}, route ：{novelMessage.GetRoute()}, message ：{novelMessage.GetMessage()}, selectMessage ：{novelMessage.GetSelectMessage()}, characterName ：{novelMessage.GetCharacterName()}, characterImagePath : {novelMessage.GetCharacterImageList()}, backgroundImagePath : {novelMessage.GetBackgroundImage().name}");
+        isComplatedMessage = false;
 
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(novelMessage);
@@ -124,20 +126,17 @@ public class NovelModel
         //    return;
         //}
 
-        var test = _novelMessageData.isEnd();
-        if (_novelMessageData.isEnd())
-        {
-            End();
-            return;
-        }
-
         if (!isComplatedMessage)
         {
             SendSkipUpdateMessage();
             return;
         }
 
-        isComplatedMessage = false;
+        if (_novelMessageData.isEnd())
+        {
+            End();
+            return;
+        }
 
         if (_novelMessageData.IsSendSelectMessage())
         {
