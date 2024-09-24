@@ -34,6 +34,13 @@ public class NovelSelectMessageUIView : MonoBehaviour
     {
         //Debug.Log($"NovelSelectMessageUIView : CreateSelectMessageButton");
 
+        DeleteSelectButtons();
+        if (selectMessages == null)
+        {
+            buttonParentObject.SetActive(false);
+            return;
+        }
+
         buttonParentObject.SetActive(true);
         for (int i = 0; i < selectMessages.Length; i++)
         {
