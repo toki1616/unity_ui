@@ -255,6 +255,7 @@ public class NovelModel
                 Log();
                 break;
             case NovelButtonEnum.Menu.Option:
+                OpenOptionUI();
                 break;
             case NovelButtonEnum.Menu.Hidden:
                 Hidden(false);
@@ -429,9 +430,17 @@ public class NovelModel
     /// <summary>
     /// Option
     /// </summary>
+    private readonly ReactiveProperty<bool> _optionUIActiveReactiveProperty = new ReactiveProperty<bool>(false);
+    public IReadOnlyReactiveProperty<bool> OptionUIActiveReactiveProperty => _optionUIActiveReactiveProperty;
+
+    private void OpenOptionUI()
+    {
+        _optionUIActiveReactiveProperty.SetValueAndForceNotify(true);
+    }
+
     private void CloseOptionUI()
     {
-        _activeLogUI.SetValueAndForceNotify(false);
+        _optionUIActiveReactiveProperty.SetValueAndForceNotify(false);
     }
 
     /// <summary>
@@ -486,6 +495,7 @@ public class NovelModel
                 break;
 
             case NovelButtonEnum.StartMenu.Option:
+                OpenOptionUI();
                 break;
             default:
                 break;
