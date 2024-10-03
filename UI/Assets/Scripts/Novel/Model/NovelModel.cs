@@ -343,6 +343,11 @@ public class NovelModel
         _novelRouteDataList.LoadNovelRouteData(saveNum);
         NovelMessage novelMessage = _novelMessageData.GetLoadMessage(_novelSaveDataList.GetLoadStoryNum(saveNum));
 
+        if (novelMessage == null)
+        {
+            return;
+        }
+
         if (_titleUIReactiveProperty.Value)
         {
             _titleUIReactiveProperty.SetValueAndForceNotify(false);
