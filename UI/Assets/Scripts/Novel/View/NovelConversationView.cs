@@ -60,6 +60,8 @@ public class NovelConversationView : MonoBehaviour
 
     private void UpdateMessage(string message)
     {
+        DisposeUpdateMessage();
+
         nowMessage = message;
         messageText.text = "";
         //messageText.text = $"{message}";
@@ -79,11 +81,16 @@ public class NovelConversationView : MonoBehaviour
 
     private void SkipUpdateMessage()
     {
+        DisposeUpdateMessage();
+
+        messageText.text = nowMessage;
+    }
+
+    private void DisposeUpdateMessage()
+    {
         if (updateMessageAsObservable != null)
         {
             updateMessageAsObservable.Dispose();
         }
-        
-        messageText.text = nowMessage;
     }
 }
