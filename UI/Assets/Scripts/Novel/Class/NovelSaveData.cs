@@ -49,7 +49,7 @@ public class NovelSaveDataList
         NovelSaveData foundData = novelSaveDataList.Find(novelSaveData => novelSaveData.SaveNum == saveNum);
         if (foundData != null)
         {
-            foundData = newSaveData;
+            foundData.Update(newSaveData);
         }
         else
         {
@@ -110,6 +110,12 @@ public class NovelSaveData
     {
         this.saveNum = saveNum;
         this.storyNum = storyNum;
+    }
+
+    public void Update(NovelSaveData novelSaveData)
+    {
+        saveNum = novelSaveData.saveNum;
+        storyNum = novelSaveData.storyNum;
     }
 
     public bool isCanLoad()

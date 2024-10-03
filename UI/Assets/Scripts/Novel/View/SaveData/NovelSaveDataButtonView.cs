@@ -91,11 +91,21 @@ public class NovelSaveDataButtonView : MonoBehaviour
     private void CreateCharacter(List<Sprite> imageList)
     {
         //Debug.Log($"NovelSaveDataButtonView : CreateCharacter");
-
+        DeleteChildObject();
         foreach (var image in imageList)
         {
             GameObject spawnObject = Instantiate(spawnCharacterImagePrefab, characterImageParentObject.transform);
             spawnObject.GetComponent<NovelCharacterImageView>().ReceivedCharacterImage(image);
+        }
+    }
+
+    private void DeleteChildObject()
+    {
+        //自分の子供を全て調べる
+        foreach (Transform child in characterImageParentObject.transform)
+        {
+            //自分の子供をDestroyする
+            Destroy(child.gameObject);
         }
     }
 
