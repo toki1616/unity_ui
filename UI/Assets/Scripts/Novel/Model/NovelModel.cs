@@ -23,6 +23,8 @@ public class NovelModel
 
     private void InitializeNovelViewData()
     {
+        nowReadMode = NovelDataEnum.ReadMode.None;
+
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(null);
         //BackgroundImage
@@ -153,6 +155,12 @@ public class NovelModel
     {
         if (!_isUIActive.Value)
         {
+            return;
+        }
+
+        if (_novelMessageData.isEnd())
+        {
+            End();
             return;
         }
 
