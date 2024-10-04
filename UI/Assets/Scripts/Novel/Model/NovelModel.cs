@@ -557,6 +557,7 @@ public class NovelModel
         switch (story)
         {
             case NovelStoryEnum.Story.Main:
+                nowReadMode = NovelDataEnum.ReadMode.None;
                 EndFadeImageActive();
                 break;
 
