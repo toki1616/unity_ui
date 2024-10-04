@@ -364,6 +364,7 @@ public class NovelModel
             _titleUIReactiveProperty.SetValueAndForceNotify(false);
         }
 
+        CloseSaveDataUI();
         SendMessage(novelMessage);
     }
 
