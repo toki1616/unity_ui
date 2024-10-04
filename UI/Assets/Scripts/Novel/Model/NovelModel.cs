@@ -23,6 +23,8 @@ public class NovelModel
 
     private void InitializeNovelViewData()
     {
+        nowReadMode = NovelDataEnum.ReadMode.None;
+
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(null);
         //BackgroundImage
@@ -156,13 +158,21 @@ public class NovelModel
             return;
         }
 
-        if (!isSelectMessage)
+        if (_novelMessageData.isEnd())
         {
-            if (_novelMessageData.IsSendSelectMessage())
-            {
-                SendNowSelectMessage();
-                return;
-            }
+            End();
+            return;
+        }
+
+        if (isSelectMessage)
+        {
+            return;
+        }
+
+        if (_novelMessageData.IsSendSelectMessage())
+        {
+            SendNowSelectMessage();
+            return;
         }
 
         SendNextMessageText();
@@ -221,7 +231,8 @@ public class NovelModel
         }
         else
         {
-            SkipNextMessageMove();
+            SendNextMessageText();
+            SendSkipUpdateMessage();
         }
 
         isSelectMessage = false;
