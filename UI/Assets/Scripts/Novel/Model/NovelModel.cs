@@ -156,13 +156,15 @@ public class NovelModel
             return;
         }
 
-        if (!isSelectMessage)
+        if (isSelectMessage)
         {
-            if (_novelMessageData.IsSendSelectMessage())
-            {
-                SendNowSelectMessage();
-                return;
-            }
+            return;
+        }
+
+        if (_novelMessageData.IsSendSelectMessage())
+        {
+            SendNowSelectMessage();
+            return;
         }
 
         SendNextMessageText();
@@ -221,7 +223,8 @@ public class NovelModel
         }
         else
         {
-            SkipNextMessageMove();
+            SendNextMessageText();
+            SendSkipUpdateMessage();
         }
 
         isSelectMessage = false;
