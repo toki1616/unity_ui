@@ -36,12 +36,23 @@ public class NovelRouteDataList
 
     public void SaveNovelRouteData(int saveNum)
     {
-        foreach (NovelRouteData novelRouteData in nowNovelUseRouteData.NovelRouteDataList)
+        NovelRouteSaveData novelRouteSaveData = new NovelRouteSaveData(saveNum: saveNum, novelUseRouteData: nowNovelUseRouteData);
+
+        NovelRouteSaveData foundData = novelRouteSaveDataList.Find(novelRouteSaveData => novelRouteSaveData.SaveNum == saveNum);
+        if (foundData != null)
         {
-            Debug.Log($"nowNovelRouteData : Route : {novelRouteData.Route}, routeCondition : {novelRouteData.RouteCondition}");
+            foundData.Update(novelRouteSaveData);
+        }
+        else
+        {
+            novelRouteSaveDataList.Add(novelRouteSaveData);
         }
 
-        NovelRouteSaveData novelRouteSaveData = new NovelRouteSaveData(saveNum: saveNum, novelUseRouteData: nowNovelUseRouteData);
+        //foreach (NovelRouteData novelRouteData in nowNovelUseRouteData.NovelRouteDataList)
+        //{
+        //    Debug.Log($"nowNovelRouteData : Route : {novelRouteData.Route}, routeCondition : {novelRouteData.RouteCondition}");
+        //}
+
         PlayerDataUtils.SaveNovelRouteData(novelRouteSaveData);
     }
 
@@ -55,7 +66,7 @@ public class NovelRouteDataList
 
         nowNovelUseRouteData = foundData.NovelUseRouteData;
 
-        //List<string> nowRouteList = nowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
+        List<string> nowRouteList = nowNovelUseRouteData.GetRouteConditionsFromNovelRouteData();
         //foreach (string nowRoute in nowRouteList)
         //{
         //    Debug.Log($"Load : nowRoute : {nowRoute}");
@@ -108,6 +119,12 @@ public class NovelRouteSaveData
     {
         this.saveNum = saveNum;
         this.novelUseRouteData = novelUseRouteData;
+    }
+
+    public void Update(NovelRouteSaveData novelRouteSaveData)
+    {
+        saveNum = novelRouteSaveData.saveNum;
+        novelUseRouteData = novelRouteSaveData.novelUseRouteData;
     }
 }
 
