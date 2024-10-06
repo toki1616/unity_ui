@@ -52,6 +52,11 @@ public class NovelModel
             return;
         }
 
+        if (nowReadMode == NovelDataEnum.ReadMode.Skip)
+        {
+            return;
+        }
+
         NextMessageMove();
     }
 
