@@ -46,7 +46,7 @@ namespace Util
         public static void SaveNovelRouteData(NovelRouteSaveData novelRouteDataList)
         {
             string jsonStr = JsonUtility.ToJson(novelRouteDataList);
-            Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
+            //Debug.Log($"SaveNovelSaveData : json : {jsonStr}");
             FileUtils.WriteNovelRouteData(jsonStr, novelRouteDataList.SaveNum);
         }
 
