@@ -23,7 +23,7 @@ public class NovelModel
 
     private void InitializeNovelViewData()
     {
-        nowReadMode = NovelDataEnum.ReadMode.None;
+        ChangeNovelReadMode(NovelDataEnum.ReadMode.None);
 
         //novelMessage
         _sendNextMessage.SetValueAndForceNotify(null);
@@ -376,15 +376,18 @@ public class NovelModel
     /// <summary>
     /// Auto
     /// </summary>
+    private readonly ReactiveProperty<bool> _sendAutoIsActive = new ReactiveProperty<bool>(false);
+    public IReadOnlyReactiveProperty<bool> SendAutoIsActiveReactiveProperty => _sendAutoIsActive;
+
     private void Auto()
     {
         if (nowReadMode == NovelDataEnum.ReadMode.Auto)
         {
-            nowReadMode = NovelDataEnum.ReadMode.None;
+            ChangeNovelReadMode(NovelDataEnum.ReadMode.None);
         }
         else
         {
-            nowReadMode = NovelDataEnum.ReadMode.Auto;
+            ChangeNovelReadMode(NovelDataEnum.ReadMode.Auto);
         }
 
         NextMessageMove();
@@ -393,17 +396,43 @@ public class NovelModel
     /// <summary>
     /// Skip
     /// </summary>
+    private readonly ReactiveProperty<bool> _sendSkipIsActive = new ReactiveProperty<bool>(false);
+    public IReadOnlyReactiveProperty<bool> SendSkipIsActiveReactiveProperty => _sendSkipIsActive;
+
     private void Skip()
     {        
         if (nowReadMode == NovelDataEnum.ReadMode.Skip)
         {
-            nowReadMode = NovelDataEnum.ReadMode.None;
+            ChangeNovelReadMode(NovelDataEnum.ReadMode.None);
         }
         else
         {
-            nowReadMode = NovelDataEnum.ReadMode.Skip;
+            ChangeNovelReadMode(NovelDataEnum.ReadMode.Skip);
             SkipNextMessageMove();
         }
+    }
+
+    private void ChangeNovelReadMode(NovelDataEnum.ReadMode readMode)
+    {
+        switch (readMode)
+        {
+            case NovelDataEnum.ReadMode.None:
+                _sendAutoIsActive.SetValueAndForceNotify(false);
+                _sendSkipIsActive.SetValueAndForceNotify(false);
+                break;
+
+            case NovelDataEnum.ReadMode.Auto:
+                _sendAutoIsActive.SetValueAndForceNotify(true);
+                _sendSkipIsActive.SetValueAndForceNotify(false);
+                break;
+            
+            case NovelDataEnum.ReadMode.Skip:
+                _sendAutoIsActive.SetValueAndForceNotify(false);
+                _sendSkipIsActive.SetValueAndForceNotify(true);
+                break;
+        }
+
+        nowReadMode = readMode;
     }
 
     /// <summary>
@@ -563,7 +592,7 @@ public class NovelModel
         switch (story)
         {
             case NovelStoryEnum.Story.Main:
-                nowReadMode = NovelDataEnum.ReadMode.None;
+                ChangeNovelReadMode(NovelDataEnum.ReadMode.None);
                 EndFadeImageActive();
                 break;
 
