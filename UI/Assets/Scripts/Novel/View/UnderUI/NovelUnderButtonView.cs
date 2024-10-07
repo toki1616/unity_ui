@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using Zenject;
 using UniRx;
 
+using MyExtention;
+
 public class NovelUnderButtonView : MonoBehaviour
 {
     private NovelPresenter _novelPresenter;
@@ -75,19 +77,7 @@ public class NovelUnderButtonView : MonoBehaviour
 
     private void OnChangeButtonActiveColor(bool isActive)
     {
-        ColorBlock colorBlock = _button.colors;
-        if (isActive)
-        {
-            Color selectedColor = new Color(100f / 255f, 100f / 255f, 100f / 255f);
-            colorBlock.normalColor = selectedColor;
-            colorBlock.selectedColor = selectedColor;
-        }
-        else
-        {
-            colorBlock.normalColor = Color.white;
-            colorBlock.selectedColor = Color.white;
-        }
-
-        _button.colors = colorBlock;
+        Color baseColor = isActive ? new Color(100f / 255f, 100f / 255f, 100f / 255f) : Color.white;
+        _button.ChangeColorBlock(baseColor);
     }
 }
