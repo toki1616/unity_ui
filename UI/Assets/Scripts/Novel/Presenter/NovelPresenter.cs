@@ -110,12 +110,20 @@ public class NovelPresenter
     /// <summary>
     /// Auto
     /// </summary>
-
+    public IObservable<bool> autoIsActiveObservable =>
+            _novelModel.SendAutoIsActiveReactiveProperty
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
 
     /// <summary>
     /// Skip
     /// </summary>
-
+    public IObservable<bool> skipIsActiveObservable =>
+            _novelModel.SendSkipIsActiveReactiveProperty
+            //.Do(value => Debug.Log($"activeSaveDataUI : {value}"))
+            .Publish()
+            .RefCount();
 
     /// <summary>
     /// Log
